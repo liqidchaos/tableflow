@@ -1,12 +1,23 @@
-apps/web/**:
-  - web
-apps/mobile/**:
-  - mobile
-packages/**:
-  - packages
-supabase/**:
-  - database
-.github/**:
-  - ci-cd
-docs/**:
-  - docs
+web:
+  - changed-files:
+      - any-glob-to-any-file: 'apps/web/**'
+
+mobile:
+  - changed-files:
+      - any-glob-to-any-file: 'apps/mobile/**'
+
+packages:
+  - changed-files:
+      - any-glob-to-any-file: 'packages/**'
+
+database:
+  - changed-files:
+      - any-glob-to-any-file: 'supabase/**'
+
+ci-cd:
+  - changed-files:
+      - any-glob-to-any-file: '.github/**'
+
+docs:
+  - changed-files:
+      - any-glob-to-any-file: 'docs/**'
