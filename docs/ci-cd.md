@@ -24,17 +24,25 @@ Vercel Git integration can also deploy the linked project when connected; Action
 
 ## Branch protection (PR management)
 
-`main` must require:
+`main` requires:
 
-1. Status check **CI / test** (job name from `ci.yml`)
-2. Pull request before merge
-3. Up-to-date branch before merge (recommended)
+1. Status check **test** (job name from `ci.yml`)
+2. Conversation resolution before merge
+3. No force-pushes / deletions
 
-Apply via GitHub Settings → Branches, or the bootstrap script:
+Bootstrap:
 
 ```bash
 ./scripts/bootstrap-github-branch-protection.sh
 ```
+
+Note: GitHub free private repos cannot use branch protection; this repo is **public** so required checks can enforce PR policy. Upgrade to GitHub Pro if the board wants a private repo with the same gates.
+
+## Vercel Git integration (optional)
+
+Actions CD (`cd.yml`) is the audited deploy path and uses `VERCEL_TOKEN` / `VERCEL_ORG_ID` / `VERCEL_PROJECT_ID`.
+
+Native Vercel↔GitHub auto-deploy additionally needs the [Vercel GitHub App](https://github.com/apps/vercel) installed on the `liqidchaos` account. Until that app is installed, rely on Actions CD.
 
 ## Local mirror of CI
 
