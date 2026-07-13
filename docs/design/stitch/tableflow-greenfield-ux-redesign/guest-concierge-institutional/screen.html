@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Guest Concierge</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400..900&amp;family=Geist:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "secondary-fixed-dim": "#c6c6cb",
+                      "on-tertiary-container": "#454547",
+                      "secondary-fixed": "#e3e2e7",
+                      "outline": "#99907c",
+                      "on-primary-container": "#554300",
+                      "inverse-primary": "#735c00",
+                      "surface-tint": "#e9c349",
+                      "on-error-container": "#ffdad6",
+                      "on-primary-fixed-variant": "#574500",
+                      "on-secondary-fixed": "#1a1b1f",
+                      "surface-container-lowest": "#0e0e10",
+                      "on-secondary-fixed-variant": "#46474b",
+                      "on-tertiary": "#303032",
+                      "tertiary-fixed-dim": "#c8c6c8",
+                      "tertiary-fixed": "#e4e2e4",
+                      "inverse-on-surface": "#303032",
+                      "primary": "#f2ca50",
+                      "error": "#ffb4ab",
+                      "on-tertiary-fixed-variant": "#474649",
+                      "surface-container-low": "#1b1b1d",
+                      "surface-container-highest": "#353437",
+                      "surface-variant": "#353437",
+                      "primary-fixed-dim": "#e9c349",
+                      "surface-container": "#201f21",
+                      "tertiary": "#d0cdd0",
+                      "outline-variant": "#4d4635",
+                      "surface-bright": "#39393b",
+                      "on-secondary-container": "#b8b8bd",
+                      "error-container": "#93000a",
+                      "background": "#131315",
+                      "on-surface": "#e5e1e4",
+                      "on-surface-variant": "#d0c5af",
+                      "on-tertiary-fixed": "#1b1b1d",
+                      "surface": "#131315",
+                      "tertiary-container": "#b4b2b4",
+                      "primary-fixed": "#ffe088",
+                      "on-secondary": "#2f3034",
+                      "primary-container": "#d4af37",
+                      "inverse-surface": "#e5e1e4",
+                      "secondary-container": "#48494d",
+                      "secondary": "#c6c6cb",
+                      "surface-container-high": "#2a2a2c",
+                      "on-background": "#e5e1e4",
+                      "on-error": "#690005",
+                      "surface-dim": "#131315",
+                      "on-primary-fixed": "#241a00",
+                      "on-primary": "#3c2f00"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "gutter": "24px",
+                      "border-width": "0.5px",
+                      "margin-desktop": "64px",
+                      "margin-mobile": "20px",
+                      "unit": "8px",
+                      "container-max": "1440px"
+              },
+              "fontFamily": {
+                      "headline-lg": [
+                              "Bodoni Moda"
+                      ],
+                      "headline-lg-mobile": [
+                              "Bodoni Moda"
+                      ],
+                      "body-md": [
+                              "Geist"
+                      ],
+                      "display-lg": [
+                              "Bodoni Moda"
+                      ],
+                      "headline-md": [
+                              "Bodoni Moda"
+                      ],
+                      "label-sm": [
+                              "Geist"
+                      ],
+                      "label-md": [
+                              "Geist"
+                      ],
+                      "body-lg": [
+                              "Geist"
+                      ]
+              },
+              "fontSize": {
+                      "headline-lg": [
+                              "40px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "display-lg": [
+                              "64px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-md": [
+                              "28px",
+                              {
+                                      "lineHeight": "1.3",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "letterSpacing": "0.08em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "label-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "letterSpacing": "0.01em",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background antialiased min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<header class="hidden md:flex bg-background dark:bg-background fixed top-0 w-full z-50 border-b border-outline-variant/30 dark:border-outline-variant/20 flex justify-between items-center h-20 px-margin-desktop max-w-container-max mx-auto">
+<div class="font-headline-md text-headline-md tracking-tighter text-on-surface dark:text-on-surface uppercase">
+            TABLEFLOW
+        </div>
+<nav class="flex gap-8 items-center">
+<a class="font-label-md text-label-md text-on-surface-variant dark:text-on-surface-variant hover:text-primary transition-colors duration-300 cursor-pointer active:opacity-80 transition-opacity" href="#">Collections</a>
+<a class="font-label-md text-label-md text-on-surface-variant dark:text-on-surface-variant hover:text-primary transition-colors duration-300 cursor-pointer active:opacity-80 transition-opacity" href="#">The Registry</a>
+<a class="font-label-md text-label-md text-on-surface-variant dark:text-on-surface-variant hover:text-primary transition-colors duration-300 cursor-pointer active:opacity-80 transition-opacity" href="#">Services</a>
+<a class="font-label-md text-label-md text-on-surface-variant dark:text-on-surface-variant hover:text-primary transition-colors duration-300 cursor-pointer active:opacity-80 transition-opacity" href="#">About</a>
+</nav>
+<div class="flex gap-4">
+<button class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors duration-300">Sign In</button>
+<button class="font-label-md text-label-md bg-primary text-on-primary px-4 py-2 rounded">Concierge</button>
+</div>
+</header>
+<main class="flex-grow pt-24 pb-32 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto w-full">
+<section class="mb-16 mt-8 md:mt-16 text-center md:text-left">
+<h1 class="font-display-lg text-display-lg mb-4">Good Evening, Mr. Sterling</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">Your dedicated concierge is ready to assist with your selections for this evening.</p>
+</section>
+<section class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Category: The Cellar -->
+<div class="group cursor-pointer relative overflow-hidden border border-outline-variant/30 rounded aspect-[3/4] flex flex-col justify-end p-8">
+<div class="absolute inset-0 z-0">
+<div class="bg-cover bg-center w-full h-full opacity-60 group-hover:opacity-80 transition-opacity duration-700" data-alt="A meticulously curated wine cellar bathed in dramatic, low-key lighting. The focus is on rows of premium vintage wine bottles resting horizontally on dark wood racks. Deep shadows emphasize the rich ruby and garnet hues of the glass. The atmosphere exudes a refined, high-end exclusive tasting room feel." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDniu8VvXrW5NqoReOC2NcBoJn8L2Z43vdztQxHuNG5oCnz5ozdZ0oh3t37vy69nYeZDwCg6gbjSVEUrDXAMDpS6Bxi5tCxH6guJbdsf4B6AW1n5M76H8MosrRQNuZWWSbLz70lgJJSJljbx93W5py8VhLzmKBq6eUA5VANAlOBGT5_6X21IVArfxPsfjFpu1wSheIngq7_AINJ6pRe8diCt5DdgzkTf9OsAJcTC881tZe4w2UPb5Yuzw')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent"></div>
+</div>
+<div class="relative z-10">
+<h2 class="font-headline-md text-headline-md mb-2">The Cellar</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">Curated vintages and rare spirits.</p>
+<div class="h-0.5 w-12 bg-primary group-hover:w-full transition-all duration-500 ease-out"></div>
+</div>
+</div>
+<!-- Category: Prime Cuts -->
+<div class="group cursor-pointer relative overflow-hidden border border-outline-variant/30 rounded aspect-[3/4] flex flex-col justify-end p-8">
+<div class="absolute inset-0 z-0">
+<div class="bg-cover bg-center w-full h-full opacity-60 group-hover:opacity-80 transition-opacity duration-700" data-alt="An exquisite, perfectly seared prime ribeye steak presented on a dark slate board. The lighting is focused and moody, highlighting the charred edges and juicy texture of the meat. Minimalist garnishes of rosemary and coarse sea salt complete the composition. The style is ultra-high-end culinary photography, emphasizing quality and precision." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCec_MDbZxkTkcreHt7LmFb1UbS50udmfACnBN1Y8oHDk9RS3lTvOwDpa94PUXkDQRF82CR9oSb31cXQx0P20d8ROsWtzD6Mt98r9ygvhW5nvxnEMOOtsmOF355PX-gKYHGH-he7mR04HvhUDrrRQHc0cXERixfBM9A_3A8tC0l6G1R8ka0cP5OrbRQx42FI3iRYcJzj2MTbFeuf2-NA89TB0k8V13NgOUM1IWQyc8yTjh8XKwhLzlZ2A')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent"></div>
+</div>
+<div class="relative z-10">
+<h2 class="font-headline-md text-headline-md mb-2">Prime Cuts</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">Exceptional meats, perfectly prepared.</p>
+<div class="h-0.5 w-12 bg-primary group-hover:w-full transition-all duration-500 ease-out"></div>
+</div>
+</div>
+<!-- Category: The Raw Bar -->
+<div class="group cursor-pointer relative overflow-hidden border border-outline-variant/30 rounded aspect-[3/4] flex flex-col justify-end p-8">
+<div class="absolute inset-0 z-0">
+<div class="bg-cover bg-center w-full h-full opacity-60 group-hover:opacity-80 transition-opacity duration-700" data-alt="A pristine raw bar presentation featuring freshly shucked oysters on a bed of crushed ice. The lighting is crisp and cool, reflecting off the silver serving tray and the translucent meat of the oysters. Subtle highlights emphasize the freshness. The aesthetic is clean, modern, and distinctly luxurious." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCTVvLgxwg171-H83xAlgF1-60Ps4zQg8mcTa-m3irJwSVpR9Eqp3KoXI4kGiv-Ey-jKp4XOrEz_HO5IAaYv7Rhclk_FAagED2l7XEIYf87K-DvKQoKCmcnI_vcm50br8qEpD-Dl5u1dfrE2APmoTnzx81NLzb7BU550oZmoxe1bA0088qQH1yajKtgonvP21mDNNzDcmXzDNkT9S5CpRjDTfd0ObL7XoyZcF7vRlC8R785-X32BvFIiQ')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent"></div>
+</div>
+<div class="relative z-10">
+<h2 class="font-headline-md text-headline-md mb-2">The Raw Bar</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">Fresh seafood and caviar selections.</p>
+<div class="h-0.5 w-12 bg-primary group-hover:w-full transition-all duration-500 ease-out"></div>
+</div>
+</div>
+</section>
+</main>
+<!-- Persistent Cart Button -->
+<div class="fixed bottom-24 md:bottom-12 left-1/2 transform -translate-x-1/2 z-40 w-[90%] md:w-auto max-w-sm">
+<button class="w-full bg-primary text-on-primary font-label-md text-label-md py-4 px-8 rounded shadow-lg flex justify-between items-center hover:bg-primary-fixed-dim transition-colors">
+<span>View Cart</span>
+<span class="font-label-sm text-label-sm bg-on-primary text-primary px-2 py-1 rounded-full">3 Items</span>
+</button>
+</div>
+<!-- BottomNavBar -->
+<nav class="md:hidden bg-surface-container dark:bg-surface-container-lowest fixed bottom-0 w-full z-50 border-t border-outline-variant/30 shadow-sm fixed bottom-0 left-0 w-full flex justify-around items-center py-3 px-margin-mobile">
+<a class="flex flex-col items-center justify-center text-on-secondary-fixed-variant hover:bg-secondary-container/10 active:scale-95 transition-transform p-2 rounded" href="#">
+<span class="material-symbols-outlined mb-1 text-[24px]">explore</span>
+<span class="font-label-sm text-label-sm">Discover</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-secondary-fixed-variant hover:bg-secondary-container/10 active:scale-95 transition-transform p-2 rounded" href="#">
+<span class="material-symbols-outlined mb-1 text-[24px]">restaurant_menu</span>
+<span class="font-label-sm text-label-sm">Menu</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary dark:text-primary-fixed-dim hover:bg-secondary-container/10 active:scale-95 transition-transform p-2 rounded" href="#">
+<span class="material-symbols-outlined mb-1 text-[24px]" style="font-variation-settings: 'FILL' 1;">concierge</span>
+<span class="font-label-sm text-label-sm">Concierge</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-secondary-fixed-variant hover:bg-secondary-container/10 active:scale-95 transition-transform p-2 rounded" href="#">
+<span class="material-symbols-outlined mb-1 text-[24px]">person</span>
+<span class="font-label-sm text-label-sm">Profile</span>
+</a>
+</nav>
+<!-- Footer -->
+<footer class="hidden md:flex bg-surface-container-lowest dark:bg-surface-container-lowest w-full border-t border-outline-variant/30 flex flex-col md:flex-row justify-between items-start md:items-center py-16 px-margin-desktop gap-8 mt-auto">
+<div class="font-headline-lg text-headline-lg text-on-surface">
+            TABLEFLOW
+        </div>
+<div class="flex flex-wrap gap-6 font-body-md text-body-md text-on-surface-variant">
+<a class="hover:text-primary underline decoration-0.5 transition-all" href="#">Privacy Policy</a>
+<a class="hover:text-primary underline decoration-0.5 transition-all" href="#">Terms of Service</a>
+<a class="hover:text-primary underline decoration-0.5 transition-all" href="#">Press</a>
+<a class="hover:text-primary underline decoration-0.5 transition-all" href="#">Contact</a>
+<a class="hover:text-primary underline decoration-0.5 transition-all" href="#">Sustainability</a>
+</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">
+            © 2024 TABLEFLOW INSTITUTIONAL. ALL RIGHTS RESERVED.
+        </div>
+</footer>
+</body></html>

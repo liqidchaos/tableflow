@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TableFlow - Luxury Dining Experience</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300..900;1,300..900&amp;family=Space+Grotesk:wght@300..700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container-low": "#1c1b1b",
+                      "on-tertiary-fixed": "#1b1c1c",
+                      "tertiary-container": "#b4b2b2",
+                      "on-primary-fixed": "#241a00",
+                      "inverse-primary": "#735c00",
+                      "on-primary-container": "#554300",
+                      "on-primary": "#3c2f00",
+                      "surface-dim": "#131313",
+                      "error-container": "#93000a",
+                      "secondary-fixed-dim": "#c8c6c5",
+                      "outline-variant": "#4d4635",
+                      "primary": "#f2ca50",
+                      "on-background": "#e5e2e1",
+                      "on-tertiary-container": "#454545",
+                      "surface-bright": "#3a3939",
+                      "on-tertiary": "#303030",
+                      "on-error-container": "#ffdad6",
+                      "secondary-fixed": "#e5e2e1",
+                      "surface-tint": "#e9c349",
+                      "surface-container-lowest": "#0e0e0e",
+                      "surface-container-high": "#2a2a2a",
+                      "inverse-surface": "#e5e2e1",
+                      "tertiary-fixed": "#e4e2e1",
+                      "surface-variant": "#353534",
+                      "on-secondary-container": "#b7b5b4",
+                      "error": "#ffb4ab",
+                      "primary-container": "#d4af37",
+                      "on-primary-fixed-variant": "#574500",
+                      "on-error": "#690005",
+                      "on-secondary-fixed": "#1c1b1b",
+                      "surface": "#131313",
+                      "on-tertiary-fixed-variant": "#474746",
+                      "surface-container": "#201f1f",
+                      "surface-container-highest": "#353534",
+                      "secondary-container": "#474746",
+                      "secondary": "#c8c6c5",
+                      "on-surface-variant": "#d0c5af",
+                      "primary-fixed": "#ffe088",
+                      "on-secondary": "#313030",
+                      "primary-fixed-dim": "#e9c349",
+                      "outline": "#99907c",
+                      "tertiary": "#d0cdcd",
+                      "on-surface": "#e5e2e1",
+                      "on-secondary-fixed-variant": "#474746",
+                      "tertiary-fixed-dim": "#c8c6c5",
+                      "background": "#131313",
+                      "inverse-on-surface": "#313030"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "section-gap": "80px",
+                      "gutter": "24px",
+                      "container-max": "1280px",
+                      "unit": "8px",
+                      "margin-mobile": "20px"
+              },
+              "fontFamily": {
+                      "body-md": [
+                              "Space Grotesk"
+                      ],
+                      "display-lg": [
+                              "Playfair Display"
+                      ],
+                      "body-lg": [
+                              "Space Grotesk"
+                      ],
+                      "headline-md": [
+                              "Playfair Display"
+                      ],
+                      "display-lg-mobile": [
+                              "Playfair Display"
+                      ],
+                      "label-caps": [
+                              "Space Grotesk"
+                      ]
+              },
+              "fontSize": {
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "display-lg": [
+                              "64px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-md": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.3",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "display-lg-mobile": [
+                              "40px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "label-caps": [
+                              "12px",
+                              {
+                                      "lineHeight": "1.0",
+                                      "letterSpacing": "0.15em",
+                                      "fontWeight": "600"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        .glowing-gold {
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.15);
+        }
+        .carved-edge {
+            border: 1px solid #262626;
+        }
+        .decorative-rule {
+            width: 40px;
+            height: 1px;
+            background-color: #f2ca50; /* primary */
+        }
+        .bg-radial-depth {
+            background: radial-gradient(circle at center, rgba(32,31,31,1) 0%, rgba(14,14,14,1) 100%);
+        }
+      </style>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-x-hidden">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-sm dark:bg-background/80 border-b border-outline-variant/30 flat no shadows">
+<div class="flex justify-between items-center px-gutter py-6 max-w-container-max mx-auto">
+<div class="font-display-lg font-light text-headline-md tracking-widest text-primary dark:text-primary uppercase">TABLEFLOW</div>
+<div class="hidden md:flex gap-8">
+<a class="text-on-surface-variant font-body-md hover:text-primary transition-colors duration-300" href="#">Heritage</a>
+<a class="text-on-surface-variant font-body-md hover:text-primary transition-colors duration-300" href="#">Precision</a>
+<a class="text-primary font-bold border-b border-primary pb-1 opacity-80 transition-opacity" href="#">The Experience</a>
+</div>
+<button class="bg-primary-container text-on-primary-fixed font-label-caps text-label-caps px-6 py-3 glowing-gold hover:bg-primary transition-colors">RESERVE</button>
+</div>
+</nav>
+<!-- Hero Section -->
+<section class="min-h-screen relative pt-[100px] flex items-center px-gutter bg-radial-depth">
+<div class="absolute inset-0 z-0">
+<div class="bg-cover bg-center w-full h-full opacity-50" data-alt="A cinematic, full-bleed photograph of an ultra-luxury fine dining setting. The scene is illuminated by dramatic, moody lighting with deep obsidian shadows and warm golden accents. A perfectly arranged table setting with exquisite glassware and polished cutlery rests on a dark surface, reflecting subtle ambient light. The atmosphere is exclusive, refined, and distinctly high-end, capturing the essence of a modern, editorial-style culinary experience." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCcb8izguUEiUiYPBoQvFhZxPbTs3LQ396sCAPeC30eDj7jzXqppjqxTYlYkCRiXzy0NsX1BU_0BWm17_dAvYMvgrPpmbjizHOuy90AMI5o-K80uOn4FpRtdEuzd-0nkw_vZpV6spw6m4SfrcQ2esFIj404tg8zT1Dn5YzlP6PajAAQhGhf6hUBhh0aSbVniXKDtQ3COAH-UezzPb4HCVtbMZZavrir1_eUTxlB1MM8uGb9Kbx4Wms9zQ')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+<div class="absolute inset-0 bg-gradient-to-r from-background/90 via-background/40 to-transparent"></div>
+</div>
+<div class="max-w-container-max mx-auto w-full z-10 grid grid-cols-1 md:grid-cols-12 gap-gutter items-center pb-section-gap">
+<div class="md:col-span-8 md:col-start-1">
+<div class="decorative-rule mb-8"></div>
+<h1 class="font-display-lg-mobile md:font-display-lg font-light text-display-lg-mobile md:text-display-lg text-on-surface mb-6">
+                    Redefining <br/>
+<span class="text-primary italic font-light">The Flow</span> of <br/>
+                    Fine Dining.
+                </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-md mb-8">
+                    An orchestrated symphony from reservation to the final pour. Seamlessly scan to pay, immersing guests in the pure art of the meal.
+                </p>
+<div class="flex gap-4">
+<button class="bg-primary-container text-on-primary-fixed font-label-caps text-label-caps px-8 py-4 glowing-gold hover:bg-primary transition-colors">EXPERIENCE NOW</button>
+<button class="border border-primary text-primary font-label-caps text-label-caps px-8 py-4 hover:bg-primary/10 transition-colors tracking-widest">DISCOVER</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Narrative Section: 5 Steps -->
+<section class="py-section-gap px-gutter bg-surface-container-lowest bg-radial-depth">
+<div class="max-w-container-max mx-auto">
+<div class="flex flex-col items-center mb-16 text-center">
+<div class="decorative-rule mb-4"></div>
+<h2 class="font-headline-md font-light text-headline-md text-primary">The Orchestration</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-4 max-w-lg">A meticulously curated journey, ensuring every touchpoint is as refined as the cuisine itself.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Step 1 & 2 Asymmetric -->
+<div class="md:col-span-7 flex flex-col justify-center pr-0 md:pr-12 mb-12 md:mb-0">
+<span class="font-label-caps text-label-caps text-primary/50 mb-2">01</span>
+<h3 class="font-headline-md font-light text-headline-md text-on-surface mb-4">The Arrival</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Your guests are anticipated. Seamless integration with bespoke concierge services ensures a reception worthy of their stature.</p>
+</div>
+<div class="md:col-span-5 relative h-[400px] carved-edge">
+<div class="bg-cover bg-center w-full h-full grayscale hover:grayscale-0 transition-all duration-700" data-alt="A close-up, highly detailed shot of a sommelier's hands elegantly pouring a vintage red wine into a crystal glass. The lighting is focused and dramatic, highlighting the rich ruby tones of the wine and the delicate facets of the glass against a deep, dark obsidian background. Subtle reflections of gold light catch the edges of the glassware, conveying a sense of precision and luxury in a high-end restaurant setting." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCVy_tcMJdxfeCuMnd0f3op2Gq_YlkupO3_3pr53wl-1VCPdIVeKx3DyyMj0756QCu7b_mvlGH9MRRpUs28W5oOBxHIF-19_rIyvw3Ca-peh5LMVsLpQoHd14T0ONtrxK7_IhGN4WkStTHkbGBmQLVzXTV1G4ZAeP5zGCY_RID1RNMRDI2DDuZ3OJorWQKns3AWmodOOiHjR0TeYhbKmiZ6E5qK_KVL0D_DUcLSpmk2763K3WgHHY2c3g')"></div>
+</div>
+<!-- Step 3 & 4 Asymmetric -->
+<div class="md:col-span-6 relative h-[500px] carved-edge mt-section-gap order-2 md:order-1">
+<div class="bg-cover bg-center w-full h-full opacity-80 mix-blend-luminosity hover:mix-blend-normal transition-all duration-700" data-alt="A top-down view of a minimalist, exquisitely plated gourmet dish on a dark, textured ceramic plate. The composition is asymmetrical and editorial, leaving negative space to emphasize the culinary artistry. The dish features vibrant, precise garnishes that stand out against the deep charcoal tones of the plate and the surrounding black table surface. A soft, ambient golden glow provides subtle depth and sophistication." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD0F9W6y09gNxp610Ix8v1Wgb1BRfxSfEwj5rZN59WHL2_7EFJN-w1Dx0ipQa2iz97KwlcCfyYVlP5Hl-uSA1PgQaXZhcnbsigznhcIwHPicS7hXevM44v8zIXXOuyyRkmc6CmYNeYz5yv119skOToGQt0ChUaMetzp0JNyF1h6WDV-e0d6dn9-yymmyOeVeU7hCVyVlrI_p3wGS4djF59KFs5raALjTpovAoCu0FbxPuDwxQCoiwJKjA')"></div>
+</div>
+<div class="md:col-span-5 md:col-start-8 flex flex-col justify-center mt-section-gap order-1 md:order-2 mb-12 md:mb-0">
+<span class="font-label-caps text-label-caps text-primary/50 mb-2">02</span>
+<h3 class="font-headline-md font-light text-headline-md text-on-surface mb-4">The Service</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-12">Discreet, anticipatory table management. Empowering your staff to deliver an invisible, yet deeply felt, level of care.</p>
+<span class="font-label-caps text-label-caps text-primary/50 mb-2">03</span>
+<h3 class="font-headline-md font-light text-headline-md text-on-surface mb-4">The Transaction</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">The check is a relic. A subtle 'Scan to Pay' artifact presented flawlessly, allowing departure on their own terms, devoid of friction.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="relative w-full bg-background dark:bg-background border-t border-outline-variant/20 flat no shadows py-section-gap px-gutter">
+<div class="flex flex-col items-center gap-unit max-w-container-max mx-auto">
+<div class="font-display-lg font-light text-primary text-headline-md tracking-widest uppercase mb-8">TABLEFLOW</div>
+<div class="flex gap-6 mb-8">
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-on-surface transition-colors" href="#">Privacy</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-on-surface transition-colors" href="#">Terms</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-on-surface transition-colors" href="#">Accessibility</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-on-surface transition-colors" href="#">Press</a>
+</div>
+<p class="font-label-caps text-label-caps text-on-surface-variant/50 text-center">© 2024 TABLEFLOW DIGITAL FLAGSHIP. ALL RIGHTS RESERVED.</p>
+</div>
+</footer>
+</body></html>

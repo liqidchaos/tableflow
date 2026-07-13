@@ -1,0 +1,13 @@
+-- SHIPPED as supabase/migrations/021_rls_with_check_and_storage.sql (TAB-22)
+-- Original SecurityEngineer draft for TAB-13 / TAB-14 F10+F11.
+-- Verification: docs/sql/tab22-021-verification.sql
+--
+-- Goals (landed):
+--   F10) Explicit WITH CHECK on venue-scoped FOR ALL policies (ownership reassignment).
+--   F11) menu-images: only venue staff/owner may write under {venue_id}/… keys.
+--
+-- App path already matches (no FE change required):
+--   apps/web/.../menu/items/[item_id]/image/route.ts
+--   → upload key `${venue_id}/${item_id}/${Date.now()}.${ext}` via service_role.
+--
+-- See migration 021 for full SQL (policies + public.storage_menu_image_venue_id).

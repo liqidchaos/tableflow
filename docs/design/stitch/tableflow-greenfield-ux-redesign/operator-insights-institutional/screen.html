@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Operator Insights - TableFlow</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&amp;family=Space+Grotesk:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "tertiary": "#d0cdcd",
+                "tertiary-fixed-dim": "#c8c6c5",
+                "inverse-surface": "#e5e2e1",
+                "surface": "#131313",
+                "surface-container-high": "#2a2a2a",
+                "surface-container": "#201f1f",
+                "outline-variant": "#4d4635",
+                "tertiary-container": "#b4b2b2",
+                "surface-bright": "#3a3939",
+                "on-error-container": "#ffdad6",
+                "on-secondary-container": "#b7b5b4",
+                "primary-fixed-dim": "#e9c349",
+                "surface-container-lowest": "#0e0e0e",
+                "primary-container": "#d4af37",
+                "background": "#131313",
+                "on-tertiary-fixed": "#1b1c1c",
+                "on-background": "#e5e2e1",
+                "on-primary-fixed-variant": "#574500",
+                "on-secondary": "#313030",
+                "on-primary-fixed": "#241a00",
+                "surface-variant": "#353534",
+                "secondary-fixed": "#e5e2e1",
+                "on-secondary-fixed-variant": "#474746",
+                "secondary-fixed-dim": "#c8c6c5",
+                "secondary-container": "#474746",
+                "surface-tint": "#e9c349",
+                "surface-container-highest": "#353534",
+                "primary-fixed": "#ffe088",
+                "on-secondary-fixed": "#1c1b1b",
+                "on-error": "#690005",
+                "surface-dim": "#131313",
+                "on-tertiary": "#303030",
+                "error": "#ffb4ab",
+                "on-tertiary-container": "#454545",
+                "on-primary": "#3c2f00",
+                "error-container": "#93000a",
+                "inverse-primary": "#735c00",
+                "on-surface-variant": "#d0c5af",
+                "primary": "#f2ca50",
+                "on-primary-container": "#554300",
+                "outline": "#99907c",
+                "tertiary-fixed": "#e4e2e1",
+                "on-tertiary-fixed-variant": "#474746",
+                "inverse-on-surface": "#313030",
+                "surface-container-low": "#1c1b1b",
+                "secondary": "#c8c6c5",
+                "on-surface": "#e5e2e1"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+        },
+        "spacing": {
+                "unit": "8px",
+                "margin-mobile": "20px",
+                "section-gap": "80px",
+                "gutter": "24px",
+                "container-max": "1280px"
+        },
+        "fontFamily": {
+                "headline-md": [
+                        "Playfair Display"
+                ],
+                "label-caps": [
+                        "Space Grotesk"
+                ],
+                "display-lg": [
+                        "Playfair Display"
+                ],
+                "body-md": [
+                        "Space Grotesk"
+                ],
+                "body-lg": [
+                        "Space Grotesk"
+                ],
+                "display-lg-mobile": [
+                        "Playfair Display"
+                ]
+        },
+        "fontSize": {
+                "headline-md": [
+                        "32px",
+                        {
+                                "lineHeight": "1.3",
+                                "fontWeight": "600"
+                        }
+                ],
+                "label-caps": [
+                        "12px",
+                        {
+                                "lineHeight": "1.0",
+                                "letterSpacing": "0.15em",
+                                "fontWeight": "600"
+                        }
+                ],
+                "display-lg": [
+                        "64px",
+                        {
+                                "lineHeight": "1.1",
+                                "letterSpacing": "-0.02em",
+                                "fontWeight": "700"
+                        }
+                ],
+                "body-md": [
+                        "16px",
+                        {
+                                "lineHeight": "1.6",
+                                "fontWeight": "400"
+                        }
+                ],
+                "body-lg": [
+                        "18px",
+                        {
+                                "lineHeight": "1.6",
+                                "fontWeight": "400"
+                        }
+                ],
+                "display-lg-mobile": [
+                        "40px",
+                        {
+                                "lineHeight": "1.2",
+                                "letterSpacing": "-0.01em",
+                                "fontWeight": "700"
+                        }
+                ]
+        }
+},
+    },
+  }
+</script>
+<style>
+        .inner-carve { border: 1px solid #262626; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); }
+        .gold-glow { box-shadow: 0 4px 20px rgba(212, 175, 55, 0.15); }
+        .dec-rule { height: 1px; background: #262626; width: 40px; margin: 24px 0; }
+        
+        /* Custom Scrollbar for sleek dark mode */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #131313; }
+        ::-webkit-scrollbar-thumb { background: #353534; }
+        ::-webkit-scrollbar-thumb:hover { background: #474746; }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen flex flex-col antialiased selection:bg-primary/30 selection:text-primary">
+<!-- TopNavBar (Web) -->
+<header class="hidden md:flex justify-between items-center px-gutter py-6 max-w-container-max mx-auto w-full z-50 bg-background/90 backdrop-blur-md border-b border-outline-variant/30 sticky top-0">
+<div class="font-display-lg text-headline-md tracking-widest text-primary uppercase">TABLEFLOW</div>
+<nav class="flex gap-8 items-center">
+<a class="text-on-surface-variant font-body-md hover:text-primary transition-colors duration-300" href="#">Heritage</a>
+<a class="text-primary font-bold border-b border-primary pb-1 hover:text-primary transition-colors duration-300" href="#">Precision</a>
+<a class="text-on-surface-variant font-body-md hover:text-primary transition-colors duration-300" href="#">The Experience</a>
+</nav>
+<button class="bg-primary text-on-primary-fixed px-6 py-3 font-label-caps text-label-caps hover:bg-primary-fixed transition-colors">
+            RESERVE
+        </button>
+</header>
+<div class="flex flex-1 flex-col md:flex-row relative">
+<!-- SideNavBar (Mobile/Tablet - acting as secondary navigation if needed, but per rules, we use SideNav as shell anchor if appropriate. Let's hide on mobile per rules, show on desktop left if desired, but we have TopNav. Let's just use TopNav for web, no bottom nav for this desktop-focused dashboard. Wait, instructions say: "On MOBILE (md:hidden), prohibit top-row text links and use the BottomNavBar. On WEB (hidden md:flex), hide the BottomNavBar and use the full nav cluster in the TopAppBar." We don't have BottomNav JSON, so we skip it or mock it. Let's mock a simple bottom nav for mobile. -->
+<nav class="md:hidden fixed bottom-0 w-full bg-surface-container-low border-t border-outline-variant/20 flex justify-around py-4 z-50 pb-safe">
+<div class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-[24px]">home</span>
+<span class="text-[10px]">Home</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-[24px]" style="font-variation-settings: 'FILL' 1;">insights</span>
+<span class="text-[10px]">Precision</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-[24px]">person</span>
+<span class="text-[10px]">Profile</span>
+</div>
+</nav>
+<!-- Main Content -->
+<main class="flex-1 max-w-container-max mx-auto w-full px-gutter md:px-12 py-12 mb-20 md:mb-0">
+<!-- Hero / Evening Flow -->
+<section class="mb-section-gap grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
+<div class="lg:col-span-5">
+<p class="font-label-caps text-label-caps text-primary tracking-widest mb-4">LIVE OPERATOR INSIGHTS</p>
+<h1 class="font-display-lg-mobile text-display-lg-mobile md:font-display-lg md:text-display-lg text-on-surface mb-6 leading-tight">
+                        Evening Flow
+                    </h1>
+<div class="dec-rule"></div>
+<div class="grid grid-cols-2 gap-8 mt-12">
+<div>
+<p class="text-on-surface-variant font-body-md text-sm mb-1">Current GMV</p>
+<p class="font-headline-md text-headline-md text-primary">$42k</p>
+</div>
+<div>
+<p class="text-on-surface-variant font-body-md text-sm mb-1">Guest Volume</p>
+<p class="font-headline-md text-headline-md text-on-surface">184 / 220</p>
+</div>
+</div>
+</div>
+<div class="lg:col-span-7 h-[400px] inner-carve bg-surface-container-low rounded-lg relative overflow-hidden group">
+<!-- Abstract chart placeholder via styling -->
+<div class="absolute inset-0 bg-[url('placeholder')] bg-cover bg-center opacity-40 mix-blend-luminosity transition-opacity duration-700 group-hover:opacity-60" data-alt="A moody, abstract data visualization glowing softly in gold and amber tones against a pitch-black background. Cinematic lighting highlights sweeping curves resembling a financial or performance chart, evoking high-end editorial aesthetics and precision."></div>
+<!-- Decorative overlay lines -->
+<div class="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-background to-transparent"></div>
+<div class="absolute bottom-12 left-8 right-8 flex items-end justify-between border-b border-surface-variant pb-4">
+<div class="flex flex-col gap-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm">trending_up</span>
+<span class="font-label-caps text-label-caps text-on-surface">Peak Velocity</span>
+</div>
+<span class="font-body-md text-on-surface-variant">7:30 PM - 8:45 PM</span>
+</div>
+<div class="h-24 w-[1px] bg-primary/30 relative">
+<div class="absolute top-0 -left-1 w-2 h-2 rounded-full bg-primary gold-glow"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Feature Sections Grid (Bento/Asymmetric) -->
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-section-gap">
+<!-- Menu Performance -->
+<div class="lg:col-span-2 inner-carve bg-surface-container-low rounded-lg p-8 flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start mb-8">
+<h2 class="font-headline-md text-headline-md text-on-surface">Menu Performance</h2>
+<span class="material-symbols-outlined text-primary">restaurant_menu</span>
+</div>
+<div class="space-y-4">
+<!-- Item 1 -->
+<div class="flex justify-between items-center group cursor-pointer border-b border-surface-variant pb-4 hover:border-primary/50 transition-colors">
+<div class="flex items-center gap-4">
+<span class="font-label-caps text-label-caps text-surface-variant">01</span>
+<span class="font-body-lg text-body-lg text-on-surface group-hover:text-primary transition-colors">A5 Wagyu Ribeye</span>
+</div>
+<span class="font-body-md text-on-surface-variant">32 Orders</span>
+</div>
+<!-- Item 2 -->
+<div class="flex justify-between items-center group cursor-pointer border-b border-surface-variant pb-4 hover:border-primary/50 transition-colors">
+<div class="flex items-center gap-4">
+<span class="font-label-caps text-label-caps text-surface-variant">02</span>
+<span class="font-body-lg text-body-lg text-on-surface group-hover:text-primary transition-colors">Truffle Frites</span>
+</div>
+<span class="font-body-md text-on-surface-variant">45 Orders</span>
+</div>
+<!-- Item 3 -->
+<div class="flex justify-between items-center group cursor-pointer pb-2 hover:border-primary/50 transition-colors">
+<div class="flex items-center gap-4">
+<span class="font-label-caps text-label-caps text-surface-variant">03</span>
+<span class="font-body-lg text-body-lg text-on-surface group-hover:text-primary transition-colors">Osetra Caviar Service</span>
+</div>
+<span class="font-body-md text-on-surface-variant">12 Orders</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Service Velocity -->
+<div class="inner-carve bg-surface-container-high rounded-lg p-8 flex flex-col justify-between relative overflow-hidden">
+<div class="absolute -right-12 -top-12 opacity-5 pointer-events-none">
+<span class="material-symbols-outlined text-[160px]">timer</span>
+</div>
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-2">Service Velocity</h2>
+<p class="font-body-md text-on-surface-variant text-sm mb-8">Scan-to-Paid Time</p>
+<div class="flex flex-col items-center justify-center py-8">
+<span class="font-display-lg text-display-lg text-primary gold-glow mb-2 text-shadow-sm">4.2<span class="text-3xl text-on-surface-variant">m</span></span>
+<span class="font-label-caps text-label-caps text-on-surface-variant tracking-wider">-1.5m vs Average</span>
+</div>
+</div>
+<button class="w-full border border-primary text-primary font-label-caps text-label-caps py-3 tracking-widest hover:bg-primary/10 transition-colors">
+                        VIEW LOGS
+                    </button>
+</div>
+</section>
+</main>
+</div>
+<!-- Footer -->
+<footer class="relative w-full border-t border-outline-variant/20 bg-background flex flex-col items-center gap-unit py-12 px-gutter max-w-container-max mx-auto mt-auto md:mb-0 mb-16">
+<div class="font-display-lg text-primary text-2xl mb-4">TABLEFLOW</div>
+<div class="flex gap-6 mb-8 font-label-caps text-label-caps">
+<a class="text-on-surface-variant hover:text-on-surface transition-colors" href="#">Privacy</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors" href="#">Terms</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors" href="#">Accessibility</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors" href="#">Press</a>
+</div>
+<p class="font-label-caps text-label-caps text-on-surface-variant text-center opacity-50">© 2024 TABLEFLOW DIGITAL FLAGSHIP. ALL RIGHTS RESERVED.</p>
+</footer>
+</body></html>

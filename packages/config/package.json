@@ -1,0 +1,11 @@
+{
+  "name": "@tableflow/config",
+  "version": "0.0.0",
+  "private": true,
+  "files": ["typescript", "eslint"],
+  "exports": {
+    "./typescript/base.json": "./typescript/base.json",
+    "./typescript/nextjs.json": "./typescript/nextjs.json",
+    "./typescript/react-native.json": "./typescript/react-native.json"
+  }
+}

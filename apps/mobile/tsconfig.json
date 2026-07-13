@@ -1,0 +1,11 @@
+{
+  "extends": "@tableflow/config/typescript/react-native.json",
+  "compilerOptions": {
+    "lib": ["ES2022", "DOM"],
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "types": ["node"]
+  },
+  "include": ["**/*.ts", "**/*.tsx"]
+}

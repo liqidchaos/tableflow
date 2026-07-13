@@ -1,0 +1,39 @@
+{
+  "name": "tableflow",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "lint": "turbo lint",
+    "type-check": "turbo type-check && tsc -p tsconfig.scripts.json --noEmit",
+    "test": "turbo test",
+    "db:push": "supabase db push",
+    "db:seed": "supabase db reset --linked",
+    "sync:platform-config": "tsx scripts/sync-platform-config.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "tsx": "^4.19.2",
+    "turbo": "^2.3.3",
+    "typescript": "^5.7.2"
+  },
+  "packageManager": "npm@10.9.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "overrides": {
+    "expo": "51.0.39",
+    "expo-camera": "15.0.16",
+    "expo-font": "12.0.10",
+    "expo-notifications": "0.28.19",
+    "expo-secure-store": "13.0.2",
+    "expo-status-bar": "1.12.1",
+    "@stripe/stripe-react-native": "0.37.2",
+    "react": "18.2.0",
+    "react-native": "0.74.5"
+  }
+}

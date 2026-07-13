@@ -1,0 +1,132 @@
+{
+  "projectId": "15818122772289104559",
+  "projectTitle": "TableFlow Greenfield UX Redesign",
+  "screens": [
+    {
+      "title": "TableFlow | Institutional Luxury Flagship",
+      "screenId": "7643221715c74989adbd75c581cd9a67",
+      "slug": "institutional-luxury-flagship",
+      "folder": "docs/design/stitch/tableflow-greenfield-ux-redesign/institutional-luxury-flagship",
+      "width": "2560",
+      "height": "6104",
+      "deviceType": "DESKTOP",
+      "files": [
+        "screen.html",
+        "screen.png",
+        "meta.json"
+      ],
+      "sizes": {
+        "screen.html": 21265,
+        "screen.png": 315539
+      }
+    },
+    {
+      "title": "TableFlow | Guest Concierge (Institutional)",
+      "screenId": "b6fe37b28fa84a4984f56fae405af5bf",
+      "slug": "guest-concierge-institutional",
+      "folder": "docs/design/stitch/tableflow-greenfield-ux-redesign/guest-concierge-institutional",
+      "width": "780",
+      "height": "4196",
+      "deviceType": "MOBILE",
+      "files": [
+        "screen.html",
+        "screen.png",
+        "meta.json"
+      ],
+      "sizes": {
+        "screen.html": 17074,
+        "screen.png": 246029
+      }
+    },
+    {
+      "title": "TableFlow | Digital Flagship (Refined)",
+      "screenId": "a34d4e54a9a44a548358aad48dbb0ed8",
+      "slug": "digital-flagship-refined",
+      "folder": "docs/design/stitch/tableflow-greenfield-ux-redesign/digital-flagship-refined",
+      "width": "2560",
+      "height": "5368",
+      "deviceType": "DESKTOP",
+      "files": [
+        "screen.html",
+        "screen.png",
+        "meta.json"
+      ],
+      "sizes": {
+        "screen.html": 15603,
+        "screen.png": 404189
+      }
+    },
+    {
+      "title": "TableFlow | Operator Insights (Institutional)",
+      "screenId": "6e1cc67713ef48b38494dd0fccee9418",
+      "slug": "operator-insights-institutional",
+      "folder": "docs/design/stitch/tableflow-greenfield-ux-redesign/operator-insights-institutional",
+      "width": "2560",
+      "height": "2648",
+      "deviceType": "DESKTOP",
+      "files": [
+        "screen.html",
+        "screen.png",
+        "meta.json"
+      ],
+      "sizes": {
+        "screen.html": 14838,
+        "screen.png": 147378
+      }
+    },
+    {
+      "title": "TableFlow | Kitchen Intelligence (Institutional)",
+      "screenId": "cf491810f02e4f9fa7edc9e939cb2357",
+      "slug": "kitchen-intelligence-institutional",
+      "folder": "docs/design/stitch/tableflow-greenfield-ux-redesign/kitchen-intelligence-institutional",
+      "width": "2560",
+      "height": "2048",
+      "deviceType": "DESKTOP",
+      "files": [
+        "screen.html",
+        "screen.png",
+        "meta.json"
+      ],
+      "sizes": {
+        "screen.html": 14471,
+        "screen.png": 100241
+      }
+    },
+    {
+      "title": "TableFlow | Floor Manager (Institutional)",
+      "screenId": "9f8fd34f0d854e33a827fc580edf7738",
+      "slug": "floor-manager-institutional",
+      "folder": "docs/design/stitch/tableflow-greenfield-ux-redesign/floor-manager-institutional",
+      "width": "780",
+      "height": "4542",
+      "deviceType": "MOBILE",
+      "files": [
+        "screen.html",
+        "screen.png",
+        "meta.json"
+      ],
+      "sizes": {
+        "screen.html": 17170,
+        "screen.png": 64225
+      }
+    },
+    {
+      "title": "TableFlow | Guest Concierge (Refined)",
+      "screenId": "4e8f7ba446f140c69d85778b455a091f",
+      "slug": "guest-concierge-refined",
+      "folder": "docs/design/stitch/tableflow-greenfield-ux-redesign/guest-concierge-refined",
+      "width": "780",
+      "height": "3408",
+      "deviceType": "MOBILE",
+      "files": [
+        "screen.html",
+        "screen.png",
+        "meta.json"
+      ],
+      "sizes": {
+        "screen.html": 16185,
+        "screen.png": 293161
+      }
+    }
+  ]
+}

@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&amp;family=Inter:wght@300..700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet"/><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">try{
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary": "#d0cdcd",
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "inverse-surface": "#e5e2e1",
+                        "surface": "#131315",
+                        "surface-container-high": "#2a2a2a",
+                        "surface-container": "#201f1f",
+                        "outline-variant": "#4d4635",
+                        "tertiary-container": "#b4b2b2",
+                        "surface-bright": "#3a3939",
+                        "on-error-container": "#ffdad6",
+                        "on-secondary-container": "#b7b5b4",
+                        "primary-fixed-dim": "#e9c349",
+                        "surface-container-lowest": "#0e0e0e",
+                        "primary-container": "#d4af37",
+                        "background": "#131315",
+                        "on-tertiary-fixed": "#1b1c1c",
+                        "on-background": "#e5e2e1",
+                        "on-primary-fixed-variant": "#574500",
+                        "on-secondary": "#313030",
+                        "on-primary-fixed": "#241a00",
+                        "surface-variant": "#353534",
+                        "secondary-fixed": "#e5e2e1",
+                        "on-secondary-fixed-variant": "#474746",
+                        "secondary-fixed-dim": "#c8c6c5",
+                        "secondary-container": "#474746",
+                        "surface-tint": "#e9c349",
+                        "surface-container-highest": "#353534",
+                        "primary-fixed": "#ffe088",
+                        "on-secondary-fixed": "#1c1b1b",
+                        "on-error": "#690005",
+                        "surface-dim": "#131315",
+                        "on-tertiary": "#303030",
+                        "error": "#ffb4ab",
+                        "on-tertiary-container": "#454545",
+                        "on-primary": "#3c2f00",
+                        "error-container": "#93000a",
+                        "inverse-primary": "#735c00",
+                        "on-surface-variant": "#d0c5af",
+                        "primary": "#f2ca50",
+                        "on-primary-container": "#554300",
+                        "outline": "#99907c",
+                        "tertiary-fixed": "#e4e2e1",
+                        "on-tertiary-fixed-variant": "#474746",
+                        "inverse-on-surface": "#313030",
+                        "surface-container-low": "#1c1b1b",
+                        "secondary": "#c8c6c5",
+                        "on-surface": "#e5e2e1"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit": "8px",
+                        "margin-mobile": "20px",
+                        "section-gap": "80px",
+                        "gutter": "24px",
+                        "container-max": "1280px"
+                    },
+                    "fontFamily": {
+                        "headline-md": [
+                                "Bodoni Moda", "serif"
+                        ],
+                        "label-caps": [
+                                "Inter", "sans-serif"
+                        ],
+                        "display-lg": [
+                                "Bodoni Moda", "serif"
+                        ],
+                        "body-md": [
+                                "Inter", "sans-serif"
+                        ],
+                        "body-lg": [
+                                "Inter", "sans-serif"
+                        ],
+                        "display-lg-mobile": [
+                                "Bodoni Moda", "serif"
+                        ]
+                    },
+                    "fontSize": {
+                        "headline-md": [
+                                "32px",
+                                {
+                                        "lineHeight": "1.3",
+                                        "fontWeight": "600"
+                                }
+                        ],
+                        "label-caps": [
+                                "12px",
+                                {
+                                        "lineHeight": "1.0",
+                                        "letterSpacing": "0.15em",
+                                        "fontWeight": "600"
+                                }
+                        ],
+                        "display-lg": [
+                                "64px",
+                                {
+                                        "lineHeight": "1.1",
+                                        "letterSpacing": "-0.02em",
+                                        "fontWeight": "700"
+                                }
+                        ],
+                        "body-md": [
+                                "16px",
+                                {
+                                        "lineHeight": "1.6",
+                                        "fontWeight": "300"
+                                }
+                        ],
+                        "body-lg": [
+                                "18px",
+                                {
+                                        "lineHeight": "1.6",
+                                        "fontWeight": "300"
+                                }
+                        ],
+                        "display-lg-mobile": [
+                                "40px",
+                                {
+                                        "lineHeight": "1.2",
+                                        "letterSpacing": "-0.01em",
+                                        "fontWeight": "700"
+                                }
+                        ]
+                    }
+                }
+            }
+        }
+    }catch(_e){}</script></head><body class="antialiased min-h-screen flex flex-col font-body-md overflow-x-hidden text-on-surface bg-background">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-background/95 backdrop-blur-sm border-b-[0.5px] border-outline-variant/30 flex justify-between items-center px-gutter py-6 max-w-container-max mx-auto left-0 right-0">
+<div class="flex items-center gap-4">
+<span class="font-display-lg text-headline-md tracking-widest text-primary uppercase">TABLEFLOW</span>
+<div class="h-6 w-[0.5px] bg-outline-variant/50 hidden md:block"></div>
+<span class="font-label-caps text-label-caps text-on-surface-variant hidden md:block">KITCHEN OPS</span>
+</div>
+<nav class="hidden md:flex gap-8">
+<a class="text-on-surface-variant font-body-md hover:text-primary transition-colors duration-300" href="#">Station A</a>
+<a class="text-primary font-bold border-b-[0.5px] border-primary pb-1 hover:text-primary transition-colors duration-300" href="#">Expo</a>
+<a class="text-on-surface-variant font-body-md hover:text-primary transition-colors duration-300" href="#">History</a>
+</nav>
+<button class="font-label-caps text-label-caps bg-primary text-on-primary px-6 py-3 rounded-sm uppercase hover:opacity-90 transition-opacity">
+            RESERVE
+        </button>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow pt-32 pb-section-gap px-gutter max-w-container-max mx-auto w-full">
+<!-- Filters / Status Bar -->
+<div class="flex justify-between items-end mb-8 border-b-[0.5px] border-outline-variant/20 pb-4">
+<div>
+<h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface mb-2">Service Grid</h1>
+<p class="text-body-lg text-on-surface-variant font-body-md">24 Active Covers • 8 Open Tickets</p>
+</div>
+<div class="flex gap-4">
+<button class="font-label-caps text-label-caps text-on-surface border-[0.5px] border-outline-variant px-4 py-2 rounded-sm hover:bg-surface-variant transition-colors">ALL COURSES</button>
+<button class="font-label-caps text-label-caps text-primary border-[0.5px] border-primary px-4 py-2 rounded-sm bg-surface-container-low shadow-[0_4px_20px_rgba(212,175,55,0.05)]">FIRE ONLY</button>
+</div>
+</div>
+<!-- Ticket Wall Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+<!-- Ticket 1: Fired / Normal -->
+<article class="bg-surface-container-low rounded-sm border-[0.5px] border-primary/40 p-5 flex flex-col relative">
+<div class="absolute top-3 right-3 text-primary text-[10px] font-bold tracking-widest uppercase border-[0.5px] border-primary/40 px-2 py-1 rounded-sm">PAID</div>
+<header class="mb-4 flex justify-between items-start border-b-[0.5px] border-outline-variant/20 pb-3 mt-4">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface">TBL 42</h2>
+<span class="font-label-caps text-label-caps text-primary mt-1 block">FIRE: MAINS</span>
+</div>
+<div class="text-right">
+<span class="block font-body-lg text-body-lg text-primary">12m</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant mt-1 block">Server: J.D.</span>
+</div>
+</header>
+<div class="flex-grow space-y-3">
+<div class="item-row pb-2">
+<div class="flex justify-between font-body-md text-body-md text-on-surface">
+<span class="">1x Tomahawk 32oz</span>
+</div>
+<div class="pl-4 font-body-md text-body-md text-on-surface-variant text-sm mt-1 border-l-[0.5px] border-outline-variant/30">
+                            - MR (Medium Rare)<br/>
+                            - Bearnaise on side
+                        </div>
+</div>
+<div class="item-row pb-2">
+<div class="flex justify-between font-body-md text-body-md text-on-surface">
+<span class="">2x Truffle Mac</span>
+</div>
+</div>
+<div class="item-row pb-2">
+<div class="flex justify-between font-body-md text-body-md text-on-surface">
+<span class="">1x Charred Asparagus</span>
+</div>
+</div>
+</div>
+<footer class="mt-4 pt-4 border-t-[0.5px] border-outline-variant/20 flex gap-2">
+<button class="flex-1 bg-surface-variant text-on-surface font-label-caps text-label-caps py-2 rounded-sm hover:bg-outline-variant transition-colors border-[0.5px] border-transparent">BUMP</button>
+<button class="flex-1 bg-primary text-on-primary font-label-caps text-label-caps py-2 rounded-sm hover:opacity-90 transition-opacity">DONE</button>
+</footer>
+</article>
+<!-- Ticket 2: Urgent -->
+<article class="bg-surface-container-low rounded-sm border-[0.5px] border-error/50 p-5 flex flex-col relative">
+<div class="absolute top-3 right-3 text-primary text-[10px] font-bold tracking-widest uppercase border-[0.5px] border-primary/40 px-2 py-1 rounded-sm">PAID</div>
+<header class="mb-4 flex justify-between items-start border-b-[0.5px] border-outline-variant/20 pb-3 mt-4">
+<div>
+<h2 class="font-headline-md text-headline-md text-error">TBL 12</h2>
+<span class="font-label-caps text-label-caps text-error mt-1 block">RUSH: APPETIZERS</span>
+</div>
+<div class="text-right">
+<span class="block font-body-lg text-body-lg text-error font-semibold animate-pulse">25m</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant mt-1 block">Server: Sarah</span>
+</div>
+</header>
+<div class="flex-grow space-y-3">
+<div class="item-row pb-2">
+<div class="flex justify-between font-body-md text-body-md text-on-surface">
+<span class="">1x Wagyu Tartare</span>
+</div>
+<div class="pl-4 font-body-md text-body-md text-error text-sm mt-1 border-l-[0.5px] border-error/50 font-semibold">
+                            - ALLERGY: PINE NUTS
+                        </div>
+</div>
+<div class="item-row pb-2">
+<div class="flex justify-between font-body-md text-body-md text-on-surface">
+<span class="">2x Oysters 1/2 Doz</span>
+</div>
+</div>
+</div>
+<footer class="mt-4 pt-4 border-t-[0.5px] border-outline-variant/20 flex gap-2">
+<button class="flex-1 bg-error text-on-error font-label-caps text-label-caps py-2 rounded-sm hover:opacity-90 transition-opacity">BUMP RUSH</button>
+</footer>
+</article>
+<!-- Ticket 3: New / Holding -->
+<article class="bg-surface-container-low rounded-sm border-[0.5px] border-outline-variant/30 p-5 flex flex-col relative opacity-80">
+<div class="absolute top-3 right-3 text-primary text-[10px] font-bold tracking-widest uppercase border-[0.5px] border-primary/40 px-2 py-1 rounded-sm">PAID</div>
+<header class="mb-4 flex justify-between items-start border-b-[0.5px] border-outline-variant/20 pb-3 mt-4">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface/80">TBL 08</h2>
+<span class="font-label-caps text-label-caps text-on-surface-variant mt-1 block">HOLD: SIDES</span>
+</div>
+<div class="text-right">
+<span class="block font-body-lg text-body-lg text-on-surface-variant">2m</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant mt-1 block">Server: Mike</span>
+</div>
+</header>
+<div class="flex-grow space-y-3">
+<div class="item-row pb-2">
+<div class="flex justify-between font-body-md text-body-md text-on-surface/80">
+<span class="">1x Creamed Spinach</span>
+</div>
+</div>
+<div class="item-row pb-2">
+<div class="flex justify-between font-body-md text-body-md text-on-surface/80">
+<span class="">1x Frites</span>
+</div>
+</div>
+</div>
+<footer class="mt-4 pt-4 border-t-[0.5px] border-outline-variant/20 flex gap-2">
+<button class="w-full border-[0.5px] border-outline-variant text-on-surface font-label-caps text-label-caps py-2 rounded-sm hover:bg-surface-variant transition-colors">FIRE NOW</button>
+</footer>
+</article>
+</div>
+</main>
+<!-- Footer -->
+<footer class="relative w-full border-t-[0.5px] border-outline-variant/20 flex flex-col items-center gap-unit py-section-gap px-gutter max-w-container-max mx-auto mt-auto">
+<span class="font-display-lg text-primary text-xl mb-4"></span>
+</footer>
+</body></html>

@@ -1,0 +1,105 @@
+import type { Config } from 'tailwindcss';
+
+const config: Config = {
+  content: [
+    './src/**/*.{js,ts,jsx,tsx,mdx}',
+    '../../packages/ui/src/**/*.{js,ts,jsx,tsx}',
+  ],
+  theme: {
+    extend: {
+      colors: {
+        ink: 'var(--color-ink)',
+        paper: 'var(--color-paper)',
+        surface: 'var(--color-surface)',
+        border: 'var(--color-border)',
+        flow: 'var(--color-flow)',
+        'flow-light': 'var(--color-flow-light)',
+        'flow-dark': 'var(--color-flow-dark)',
+        citrus: 'var(--color-citrus)',
+        'citrus-light': 'var(--color-citrus-light)',
+        sun: 'var(--color-sun)',
+        'sun-light': 'var(--color-sun-light)',
+        grape: 'var(--color-grape)',
+        'grape-light': 'var(--color-grape-light)',
+        ember: 'var(--color-ember)',
+        'ember-light': 'var(--color-ember-light)',
+        'ember-dark': 'var(--color-ember-dark)',
+        success: 'var(--color-success)',
+        warning: 'var(--color-warning)',
+        error: 'var(--color-error)',
+        muted: 'var(--color-muted)',
+        gold: 'var(--color-gold)',
+        'gold-container': 'var(--color-gold-container)',
+        'gold-on': 'var(--color-gold-on)',
+        flagship: {
+          primary: 'var(--color-gold)',
+          'primary-container': 'var(--color-gold-container)',
+          'on-primary': 'var(--color-gold-on)',
+          background: 'var(--color-luxury-bg)',
+          surface: 'var(--color-luxury-surface)',
+          'surface-low': 'var(--color-luxury-surface-low)',
+          'surface-lowest': 'var(--color-luxury-surface-lowest)',
+          'surface-high': 'var(--color-luxury-surface-high)',
+          'on-surface': 'var(--color-luxury-on-surface)',
+          'on-surface-variant': 'var(--color-luxury-on-surface-variant)',
+          'outline-variant': 'var(--color-luxury-outline-variant)',
+        },
+        luxury: {
+          bg: 'var(--color-luxury-bg)',
+          surface: 'var(--color-luxury-surface)',
+          'surface-low': 'var(--color-luxury-surface-low)',
+          'surface-lowest': 'var(--color-luxury-surface-lowest)',
+          'surface-high': 'var(--color-luxury-surface-high)',
+          'surface-highest': 'var(--color-luxury-surface-highest)',
+          'on-surface': 'var(--color-luxury-on-surface)',
+          'on-surface-variant': 'var(--color-luxury-on-surface-variant)',
+          outline: 'var(--color-luxury-outline)',
+          'outline-variant': 'var(--color-luxury-outline-variant)',
+        },
+      },
+      fontFamily: {
+        display: ['var(--font-display)', 'sans-serif'],
+        serif: ['var(--font-serif)', 'Georgia', 'serif'],
+        sans: ['var(--font-sans)', 'sans-serif'],
+        mono: ['var(--font-mono)', 'monospace'],
+      },
+      borderRadius: {
+        sm: 'var(--radius-sm)',
+        md: 'var(--radius-md)',
+        lg: 'var(--radius-lg)',
+        xl: 'var(--radius-xl)',
+      },
+      boxShadow: {
+        sm: 'var(--shadow-sm)',
+        md: 'var(--shadow-md)',
+        lg: 'var(--shadow-lg)',
+        flow: 'var(--shadow-flow)',
+        ember: 'var(--shadow-flow)',
+        gold: '0 4px 20px var(--color-gold-glow)',
+      },
+      fontSize: {
+        hero: 'var(--text-hero)',
+        section: 'var(--text-section)',
+        display: 'var(--text-display)',
+      },
+      maxWidth: {
+        section: 'var(--section-max)',
+        container: 'var(--container-max)',
+      },
+      spacing: {
+        nav: 'var(--nav-height)',
+        gutter: '24px',
+        'section-gap': 'var(--section-gap)',
+      },
+      height: {
+        nav: 'var(--nav-height)',
+      },
+      transitionTimingFunction: {
+        spring: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
+      },
+    },
+  },
+  plugins: [],
+};
+
+export default config;

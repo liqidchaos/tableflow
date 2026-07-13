@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Floor Manager - TableFlow</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&amp;family=Space+Grotesk:wght@300..700&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "tertiary": "#d0cdcd",
+                "tertiary-fixed-dim": "#c8c6c5",
+                "inverse-surface": "#e5e2e1",
+                "surface": "#131313",
+                "surface-container-high": "#2a2a2a",
+                "surface-container": "#201f1f",
+                "outline-variant": "#4d4635",
+                "tertiary-container": "#b4b2b2",
+                "surface-bright": "#3a3939",
+                "on-error-container": "#ffdad6",
+                "on-secondary-container": "#b7b5b4",
+                "primary-fixed-dim": "#e9c349",
+                "surface-container-lowest": "#0e0e0e",
+                "primary-container": "#d4af37",
+                "background": "#131313",
+                "on-tertiary-fixed": "#1b1c1c",
+                "on-background": "#e5e2e1",
+                "on-primary-fixed-variant": "#574500",
+                "on-secondary": "#313030",
+                "on-primary-fixed": "#241a00",
+                "surface-variant": "#353534",
+                "secondary-fixed": "#e5e2e1",
+                "on-secondary-fixed-variant": "#474746",
+                "secondary-fixed-dim": "#c8c6c5",
+                "secondary-container": "#474746",
+                "surface-tint": "#e9c349",
+                "surface-container-highest": "#353534",
+                "primary-fixed": "#ffe088",
+                "on-secondary-fixed": "#1c1b1b",
+                "on-error": "#690005",
+                "surface-dim": "#131313",
+                "on-tertiary": "#303030",
+                "error": "#ffb4ab",
+                "on-tertiary-container": "#454545",
+                "on-primary": "#3c2f00",
+                "error-container": "#93000a",
+                "inverse-primary": "#735c00",
+                "on-surface-variant": "#d0c5af",
+                "primary": "#f2ca50",
+                "on-primary-container": "#554300",
+                "outline": "#99907c",
+                "tertiary-fixed": "#e4e2e1",
+                "on-tertiary-fixed-variant": "#474746",
+                "inverse-on-surface": "#313030",
+                "surface-container-low": "#1c1b1b",
+                "secondary": "#c8c6c5",
+                "on-surface": "#e5e2e1"
+        },
+        "borderRadius": {
+                "DEFAULT": "0rem",
+                "lg": "0rem",
+                "xl": "0rem",
+                "full": "9999px"
+        },
+        "spacing": {
+                "unit": "8px",
+                "margin-mobile": "20px",
+                "section-gap": "80px",
+                "gutter": "24px",
+                "container-max": "1280px"
+        },
+        "fontFamily": {
+                "headline-md": [
+                        "Bodoni Moda"
+                ],
+                "label-caps": [
+                        "Space Grotesk"
+                ],
+                "display-lg": [
+                        "Bodoni Moda"
+                ],
+                "body-md": [
+                        "Space Grotesk"
+                ],
+                "body-lg": [
+                        "Space Grotesk"
+                ],
+                "display-lg-mobile": [
+                        "Bodoni Moda"
+                ]
+        },
+        "fontSize": {
+                "headline-md": [
+                        "32px",
+                        {
+                                "lineHeight": "1.3",
+                                "fontWeight": "600"
+                        }
+                ],
+                "label-caps": [
+                        "12px",
+                        {
+                                "lineHeight": "1.0",
+                                "letterSpacing": "0.15em",
+                                "fontWeight": "600"
+                        }
+                ],
+                "display-lg": [
+                        "64px",
+                        {
+                                "lineHeight": "1.1",
+                                "letterSpacing": "-0.02em",
+                                "fontWeight": "700"
+                        }
+                ],
+                "body-md": [
+                        "16px",
+                        {
+                                "lineHeight": "1.6",
+                                "fontWeight": "400"
+                        }
+                ],
+                "body-lg": [
+                        "18px",
+                        {
+                                "lineHeight": "1.6",
+                                "fontWeight": "400"
+                        }
+                ],
+                "display-lg-mobile": [
+                        "40px",
+                        {
+                                "lineHeight": "1.2",
+                                "letterSpacing": "-0.01em",
+                                "fontWeight": "700"
+                        }
+                ]
+        }
+},
+    },
+  }
+</script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col pb-24 md:pb-0 pt-24 md:pt-0">
+<!-- Top App Bar (Mobile View Priority) -->
+<header class="fixed top-0 w-full z-50 bg-background border-b border-outline-variant/30 flex justify-between items-center px-margin-mobile py-6 md:hidden">
+<h1 class="font-display-lg-mobile text-display-lg-mobile tracking-widest text-primary uppercase">TABLEFLOW</h1>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary text-2xl">notifications</span>
+<span class="material-symbols-outlined text-on-surface-variant text-2xl">search</span>
+</div>
+</header>
+<!-- Side Navigation (Desktop Priority) -->
+<aside class="hidden md:flex flex-col h-full py-12 px-8 fixed left-0 top-0 w-80 bg-surface-container-low border-r border-outline-variant/20">
+<div class="mb-12">
+<h1 class="font-display-lg text-primary text-headline-md tracking-widest uppercase">TABLEFLOW</h1>
+<div class="mt-8 flex items-center gap-4">
+<div class="w-12 h-12 rounded-none bg-surface-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant">person</span>
+</div>
+<div>
+<h2 class="font-headline-md text-[20px] text-on-surface">Concierge</h2>
+<p class="font-body-md text-on-surface-variant text-sm">At your service</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 flex flex-col gap-2">
+<a class="flex items-center gap-4 px-4 py-3 rounded-none text-on-surface-variant hover:bg-surface-variant hover:text-on-surface transition-all duration-300" href="#">
+<span class="material-symbols-outlined">concierge</span>
+<span class="font-body-md text-body-md">Concierge</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-none text-on-surface-variant hover:bg-surface-variant hover:text-on-surface transition-all duration-300" href="#">
+<span class="material-symbols-outlined">restaurant_menu</span>
+<span class="font-body-md text-body-md">Menu</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-none text-primary bg-surface-container-high border-r-2 border-primary" href="#">
+<span class="material-symbols-outlined">room_service</span>
+<span class="font-body-md text-body-md font-bold">Table Service</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-none text-on-surface-variant hover:bg-surface-variant hover:text-on-surface transition-all duration-300" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-body-md text-body-md">Account</span>
+</a>
+</nav>
+<button class="w-full py-4 mt-8 bg-primary text-on-primary font-label-caps text-label-caps tracking-widest uppercase hover:opacity-90 transition-opacity">
+            Call Sommelier
+        </button>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 md:ml-80 px-margin-mobile md:px-gutter py-12 max-w-container-max mx-auto w-full flex flex-col gap-12">
+<!-- Service Overview -->
+<section class="flex flex-col gap-8">
+<h2 class="font-headline-md text-headline-md text-on-surface">Service Overview</h2>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+<div class="bg-surface-container-low p-8 border border-outline-variant/30 flex flex-col gap-4 relative overflow-hidden">
+<div class="absolute inset-0 opacity-10 bg-gradient-to-br from-primary to-transparent pointer-events-none"></div>
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest">Active Tables</span>
+<span class="font-display-lg-mobile text-display-lg-mobile text-primary">12</span>
+</div>
+<div class="bg-surface-container-low p-8 border border-outline-variant/30 flex flex-col gap-4">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest">Pending</span>
+<span class="font-display-lg-mobile text-display-lg-mobile text-on-surface">3</span>
+</div>
+<div class="bg-surface-container-low p-8 border border-outline-variant/30 flex flex-col gap-4">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest">Available</span>
+<span class="font-display-lg-mobile text-display-lg-mobile text-on-surface">8</span>
+</div>
+<div class="bg-surface-container-low p-8 border border-outline-variant/30 flex flex-col gap-4">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest">Avg Time</span>
+<span class="font-display-lg-mobile text-display-lg-mobile text-on-surface">45m</span>
+</div>
+</div>
+</section>
+<!-- High Priority Alerts -->
+<section class="flex flex-col gap-6">
+<div class="bg-surface-container-high border-l-4 border-primary p-8 flex items-start justify-between group cursor-pointer hover:bg-surface-variant transition-colors">
+<div class="flex items-start gap-6">
+<span class="material-symbols-outlined text-primary mt-1 text-3xl" style="font-variation-settings: 'FILL' 1;">wine_bar</span>
+<div class="flex flex-col gap-2">
+<span class="font-label-caps text-label-caps text-primary uppercase tracking-widest">Priority Request</span>
+<span class="font-body-lg text-body-lg text-on-surface">Sommelier Request at T4</span>
+<span class="font-body-md text-on-surface-variant">Guest is inquiring about the reserve cellar selection.</span>
+</div>
+</div>
+<span class="font-label-caps text-label-caps text-on-surface-variant">2m ago</span>
+</div>
+<div class="bg-surface-container-low border border-outline-variant/30 p-8 flex items-start justify-between group cursor-pointer hover:bg-surface-variant transition-colors">
+<div class="flex items-start gap-6">
+<span class="material-symbols-outlined text-on-surface-variant mt-1 text-3xl" style="font-variation-settings: 'FILL' 1;">receipt_long</span>
+<div class="flex flex-col gap-2">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest">Action Required</span>
+<span class="font-body-lg text-body-lg text-on-surface">Bill requested at T12</span>
+<span class="font-body-md text-on-surface-variant">Split payment, 3 ways.</span>
+</div>
+</div>
+<span class="font-label-caps text-label-caps text-on-surface-variant">5m ago</span>
+</div>
+</section>
+<div class="w-full h-px bg-outline-variant/30 my-8 max-w-lg mx-auto"></div>
+<!-- Floor Map / Table Grid -->
+<section class="flex flex-col gap-8 pb-24 md:pb-0">
+<div class="flex justify-between items-center">
+<h2 class="font-headline-md text-[28px] text-on-surface">Floor Status</h2>
+<div class="flex gap-2">
+<button class="px-6 py-3 border border-primary text-primary font-label-caps text-label-caps tracking-widest uppercase hover:bg-primary/10 transition-colors">
+                        Filter
+                    </button>
+</div>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+<!-- Table Card: Ordering -->
+<div class="bg-surface-container-low border border-outline-variant/30 p-8 flex flex-col items-center justify-center gap-6 hover:bg-surface-variant transition-colors cursor-pointer aspect-square">
+<h3 class="font-display-lg-mobile text-[40px] text-on-surface">T1</h3>
+<div class="px-4 py-2 bg-surface-variant border border-outline-variant rounded-none flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
+<span class="font-label-caps text-[10px] text-on-surface uppercase tracking-widest">Ordering</span>
+</div>
+<span class="font-body-md text-on-surface-variant text-sm">4 Guests · 15m</span>
+</div>
+<!-- Table Card: Dining -->
+<div class="bg-surface-container-low border border-outline-variant/30 p-8 flex flex-col items-center justify-center gap-6 hover:bg-surface-variant transition-colors cursor-pointer aspect-square">
+<h3 class="font-display-lg-mobile text-[40px] text-on-surface">T2</h3>
+<div class="px-4 py-2 bg-surface-variant border border-outline-variant/30 rounded-none flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-tertiary"></div>
+<span class="font-label-caps text-[10px] text-on-surface-variant uppercase tracking-widest">Dining</span>
+</div>
+<span class="font-body-md text-on-surface-variant text-sm">2 Guests · 45m</span>
+</div>
+<!-- Table Card: Paying -->
+<div class="bg-surface-container-low border border-outline-variant/30 p-8 flex flex-col items-center justify-center gap-6 hover:bg-surface-variant transition-colors cursor-pointer aspect-square">
+<h3 class="font-display-lg-mobile text-[40px] text-on-surface">T3</h3>
+<div class="px-4 py-2 bg-surface-variant border border-outline-variant rounded-none flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-on-surface"></div>
+<span class="font-label-caps text-[10px] text-on-surface uppercase tracking-widest">Paying</span>
+</div>
+<span class="font-body-md text-on-surface-variant text-sm">6 Guests · 1h 20m</span>
+</div>
+<!-- Table Card: Open -->
+<div class="bg-surface-container-lowest border border-dashed border-outline-variant/50 p-8 flex flex-col items-center justify-center gap-6 hover:bg-surface-container-low transition-colors cursor-pointer aspect-square opacity-70">
+<h3 class="font-display-lg-mobile text-[40px] text-on-surface-variant">T4</h3>
+<div class="px-4 py-2 bg-transparent border border-outline-variant/50 rounded-none flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-transparent border border-on-surface-variant"></div>
+<span class="font-label-caps text-[10px] text-on-surface-variant uppercase tracking-widest">Open</span>
+</div>
+<span class="font-body-md text-on-surface-variant text-sm">Cleaned</span>
+</div>
+<!-- Table Card: Dining -->
+<div class="bg-surface-container-low border border-outline-variant/30 p-8 flex flex-col items-center justify-center gap-6 hover:bg-surface-variant transition-colors cursor-pointer aspect-square">
+<h3 class="font-display-lg-mobile text-[40px] text-on-surface">T5</h3>
+<div class="px-4 py-2 bg-surface-variant border border-outline-variant/30 rounded-none flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-tertiary"></div>
+<span class="font-label-caps text-[10px] text-on-surface-variant uppercase tracking-widest">Dining</span>
+</div>
+<span class="font-body-md text-on-surface-variant text-sm">2 Guests · 30m</span>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar (Mobile Only) -->
+<nav class="fixed bottom-0 w-full z-50 bg-surface-container-low/95 backdrop-blur-md border-t border-outline-variant/30 md:hidden pb-safe">
+<ul class="flex justify-around items-center py-4 px-4">
+<li class="flex-1 flex flex-col items-center justify-center gap-2 group cursor-pointer text-primary">
+<span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">grid_view</span>
+<span class="font-label-caps text-[10px] tracking-widest uppercase">Floor</span>
+</li>
+<li class="flex-1 flex flex-col items-center justify-center gap-2 group cursor-pointer text-on-surface-variant hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined text-[28px]">notifications</span>
+<span class="font-label-caps text-[10px] tracking-widest uppercase">Alerts</span>
+</li>
+<li class="flex-1 flex flex-col items-center justify-center gap-2 group cursor-pointer text-on-surface-variant hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined text-[28px]">settings</span>
+<span class="font-label-caps text-[10px] tracking-widest uppercase">Settings</span>
+</li>
+</ul>
+</nav>
+<style>
+        /* Safe area support for mobile devices */
+        @supports (padding-bottom: env(safe-area-inset-bottom)) {
+            .pb-safe {
+                padding-bottom: env(safe-area-inset-bottom);
+            }
+        }
+    </style>
+</body></html>

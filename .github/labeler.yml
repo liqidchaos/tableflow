@@ -1,0 +1,12 @@
+apps/web/**:
+  - web
+apps/mobile/**:
+  - mobile
+packages/**:
+  - packages
+supabase/**:
+  - database
+.github/**:
+  - ci-cd
+docs/**:
+  - docs
