@@ -1,3 +1,4 @@
+import { timingSafeEqual } from 'crypto';
 import { NextRequest } from 'next/server';
 import { ZodSchema } from 'zod';
 import {
@@ -149,6 +150,14 @@ export function requireStripe(): Stripe {
   const stripe = getStripe();
   if (!stripe) throwError('VENUE_NOT_ONBOARDED', 'Payments are not configured for this venue');
   return stripe;
+}
+
+/** Constant-time string compare for shared secrets (false when lengths differ). */
+export function safeEqualSecrets(provided: string, expected: string): boolean {
+  const a = Buffer.from(provided);
+  const b = Buffer.from(expected);
+  if (a.length !== b.length) return false;
+  return timingSafeEqual(a, b);
 }
 
 export async function getOwnerVenueBilling(userId: string) {
