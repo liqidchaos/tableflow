@@ -95,6 +95,6 @@ now), and a self-serve venue-facing "request an invoice" flow.
 read their own venue's rows; all writes are service-role only, same pattern as
 `stripe_webhook_events`).
 
-This migration is **not yet applied** to any Supabase project — apply it the same way the
-existing 001–022 migrations are deployed (the Supabase MCP available in this environment is
-connected to an unrelated project, not TableFlow's `cptyjloveecusgvituzo`).
+Applied to hosted Supabase `cptyjloveecusgvituzo` (verified 2026-07-20 via `supabase migration list --linked`
+and column presence on `venues` / `payments` / `venue_invoices`). Push path remains `npx supabase db push --linked`
+(see `scripts/supabase-link-hosted.sh`).
