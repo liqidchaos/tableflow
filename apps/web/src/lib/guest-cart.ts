@@ -14,6 +14,7 @@ export interface CartLine {
   modifierPriceDeltas?: number[];
   special_instructions?: string;
   course: string;
+  image_url?: string;
 }
 
 export function cartLineKey(line: {

@@ -86,6 +86,7 @@ export function ItemDetailSheet({ item, brandColor, onClose, onAdd }: ItemDetail
       modifierPriceDeltas,
       special_instructions: instructions || undefined,
       course: 'main',
+      image_url: item.image_url ?? undefined,
     });
     onClose();
   }

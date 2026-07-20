@@ -8,18 +8,17 @@ import {
 } from 'framer-motion';
 import type { ReactNode } from 'react';
 
+/** Opacity + translate only — avoid animating `filter` (blur) which is costly on mobile GPUs. */
 const itemVariants: Variants = {
   hidden: {
     opacity: 0,
-    y: 28,
-    filter: 'blur(6px)',
+    y: 20,
   },
   visible: {
     opacity: 1,
     y: 0,
-    filter: 'blur(0px)',
     transition: {
-      duration: 0.65,
+      duration: 0.5,
       ease: [0.22, 1, 0.36, 1],
     },
   },

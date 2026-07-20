@@ -17,6 +17,7 @@ import { RequestsSheet } from '@/components/guest/RequestsSheet';
 import { GuestShell } from '@/components/guest/GuestShell';
 import { GuestErrorState } from '@/components/guest/GuestErrorState';
 import { GuestLoadingState } from '@/components/guest/GuestLoadingState';
+import { Reveal, RevealItem } from '@/components/marketing/motion';
 
 interface ScanResponse {
   session_id: string;
@@ -35,6 +36,14 @@ import { cartLineKey, type CartLine } from '@/lib/guest-cart';
 
 const SESSION_KEY = 'tableflow_guest_session';
 const DEFAULT_GOLD = '#f2ca50';
+
+function prefersReducedMotion(): boolean {
+  return typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
+function scrollBehavior(): ScrollBehavior {
+  return prefersReducedMotion() ? 'auto' : 'smooth';
+}
 
 export default function GuestScanPage() {
   const params = useParams();
@@ -218,37 +227,47 @@ export default function GuestScanPage() {
       onNavigate={(tab) => {
         setGuestTab(tab);
         if (tab === 'menu') {
-          document.getElementById('guest-menu')?.scrollIntoView({ behavior: 'smooth' });
+          document.getElementById('guest-menu')?.scrollIntoView({ behavior: scrollBehavior() });
         } else {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
+          window.scrollTo({ top: 0, behavior: scrollBehavior() });
         }
       }}
       onCallServer={() => setShowRequests(true)}
     >
       <div className="mx-auto max-w-7xl px-5 md:px-gutter">
-        <section className="mb-8 py-8 md:py-16">
-          <h1 className="mb-4 font-serif text-[clamp(2rem,5vw,3.5rem)] font-light leading-tight text-flagship-on-surface">
-            Good evening,{' '}
-            <br />
-            <span className="bg-gradient-to-r from-gold to-gold-container bg-clip-text italic text-transparent">
-              {session?.venue_name}
-            </span>
-          </h1>
-          <p className="max-w-2xl text-lg font-light leading-relaxed text-flagship-on-surface-variant">
-            Allow us to guide you through tonight&apos;s selections. Payment is securely authorized
-            prior to preparation to ensure uninterrupted service.
-          </p>
-        </section>
+        <Reveal className="mb-8 py-8 md:py-16" immediate stagger={0.12}>
+          <RevealItem>
+            <div className="decorative-rule mb-6" aria-hidden />
+          </RevealItem>
+          <RevealItem>
+            <h1 className="mb-4 font-serif text-[clamp(2rem,5vw,3.5rem)] font-light leading-tight text-flagship-on-surface">
+              Good evening,{' '}
+              <br />
+              <span className="text-glow-gold bg-gradient-to-r from-gold to-gold-container bg-clip-text italic text-transparent">
+                {session?.venue_name}
+              </span>
+            </h1>
+          </RevealItem>
+          <RevealItem>
+            <p className="max-w-2xl text-lg font-light leading-relaxed text-flagship-on-surface-variant">
+              Allow us to guide you through tonight&apos;s selections. Payment is securely authorized
+              prior to preparation to ensure uninterrupted service.
+            </p>
+          </RevealItem>
+        </Reveal>
 
-        <section id="guest-menu" className="mb-8 space-y-4">
-          <input
-            type="search"
-            placeholder="Search menu"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="input w-full border-luxury-outline-variant/40 bg-luxury-surface-low text-luxury-on-surface placeholder:text-luxury-on-surface-variant/60"
-          />
-          <div className="flex gap-2 overflow-x-auto pb-1">
+        <Reveal id="guest-menu" className="mb-8 space-y-4" immediate delay={0.3}>
+          <RevealItem>
+            <input
+              type="search"
+              placeholder="Search menu"
+              aria-label="Search menu"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="input w-full border-luxury-outline-variant/40 bg-luxury-surface-low text-luxury-on-surface placeholder:text-luxury-on-surface-variant/60"
+            />
+          </RevealItem>
+          <RevealItem className="flex gap-2 overflow-x-auto pb-1">
             <CategoryTab label="All" active={!selectedCategoryId} brandColor={brandColor} onClick={() => setSelectedCategoryId(null)} />
             {categories.map((cat) => (
               <CategoryTab
@@ -259,8 +278,8 @@ export default function GuestScanPage() {
                 onClick={() => setSelectedCategoryId(cat.id)}
               />
             ))}
-          </div>
-          <div className="flex flex-wrap gap-2">
+          </RevealItem>
+          <RevealItem className="flex flex-wrap gap-2">
             {['vegan', 'vegetarian', 'gluten-free'].map((tag) => (
               <button
                 key={tag}
@@ -277,71 +296,77 @@ export default function GuestScanPage() {
                 </Badge>
               </button>
             ))}
-          </div>
-        </section>
+          </RevealItem>
+        </Reveal>
 
         {filteredItems.length === 0 ? (
           <EmptyMenuState hasFilters={hasFilters} onClearFilters={() => { setSearch(''); setDietary(null); setSelectedCategoryId(null); }} />
         ) : (
-          <section className="grid auto-rows-[200px] grid-cols-1 gap-4 md:auto-rows-[240px] md:grid-cols-12">
+          <Reveal className="grid auto-rows-[200px] grid-cols-1 gap-4 md:auto-rows-[240px] md:grid-cols-12" stagger={0.08}>
             {featuredItem && (
-              <button
-                type="button"
-                disabled={!featuredItem.is_available}
-                onClick={() => featuredItem.is_available && setDetailItem(featuredItem)}
-                className="group relative col-span-1 row-span-2 overflow-hidden rounded-lg border border-[#262626] bg-luxury-surface-low/50 text-left shadow-[0_8px_30px_rgb(0,0,0,0.5)] backdrop-blur-sm md:col-span-8 disabled:opacity-50"
-              >
-                {featuredItem.image_url ? (
-                  <div
-                    className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
-                    style={{ backgroundImage: `url(${featuredItem.image_url})` }}
-                    aria-hidden
-                  />
-                ) : (
-                  <div className="absolute inset-0 bg-luxury-surface-high" aria-hidden />
-                )}
-                <div className="absolute inset-0 bg-gradient-to-t from-luxury-bg via-luxury-bg/40 to-transparent" />
-                <div className="absolute bottom-0 left-0 flex w-full items-end justify-between p-6">
-                  <div>
-                    <p className="label-caps mb-2 tracking-[0.2em] text-gold/80">{featuredItem.categoryName}</p>
-                    <h3 className="font-serif text-2xl font-light text-luxury-on-surface">{featuredItem.name}</h3>
-                    <p className="mt-1 font-mono text-sm text-luxury-on-surface-variant">
-                      ${Number(featuredItem.price).toFixed(2)}
-                    </p>
+              <RevealItem className="col-span-1 row-span-2 md:col-span-8">
+                <button
+                  type="button"
+                  disabled={!featuredItem.is_available}
+                  onClick={() => featuredItem.is_available && setDetailItem(featuredItem)}
+                  className="carved-edge group relative h-full w-full overflow-hidden rounded-lg bg-luxury-surface-low/50 text-left shadow-[0_8px_30px_rgb(0,0,0,0.5)] transition-shadow hover:shadow-[0_8px_40px_rgba(212,175,55,0.12)] disabled:opacity-50"
+                >
+                  {featuredItem.image_url ? (
+                    <div
+                      className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+                      style={{ backgroundImage: `url(${featuredItem.image_url})` }}
+                      aria-hidden
+                    />
+                  ) : (
+                    <div className="absolute inset-0 bg-luxury-surface-high" aria-hidden />
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-luxury-bg via-luxury-bg/40 to-transparent" />
+                  <div className="absolute bottom-0 left-0 flex w-full items-end justify-between p-6">
+                    <div>
+                      <p className="label-caps mb-2 tracking-[0.2em] text-gold/80">{featuredItem.categoryName}</p>
+                      <h3 className="font-serif text-2xl font-light text-luxury-on-surface">{featuredItem.name}</h3>
+                      <p className="mt-1 font-mono text-sm text-luxury-on-surface-variant">
+                        ${Number(featuredItem.price).toFixed(2)}
+                      </p>
+                    </div>
+                    <span
+                      className="flex h-10 w-10 items-center justify-center rounded-full border border-gold/40 text-gold transition-colors group-hover:border-gold"
+                      aria-hidden
+                    >
+                      →
+                    </span>
                   </div>
-                  <span className="flex h-10 w-10 items-center justify-center rounded-full border border-gold/40 text-gold transition-colors group-hover:border-gold">
-                    →
-                  </span>
-                </div>
-              </button>
+                </button>
+              </RevealItem>
             )}
             {gridItems.map((item) => (
-              <button
-                key={item.id}
-                type="button"
-                disabled={!item.is_available}
-                onClick={() => item.is_available && setDetailItem(item)}
-                className="group relative col-span-1 overflow-hidden rounded-lg border border-[#262626] bg-luxury-surface-low/50 text-left shadow-[0_8px_30px_rgb(0,0,0,0.5)] backdrop-blur-sm md:col-span-4 disabled:opacity-50"
-              >
-                {item.image_url ? (
-                  <div
-                    className="absolute inset-0 bg-cover bg-center opacity-80 transition-transform duration-700 group-hover:scale-105"
-                    style={{ backgroundImage: `url(${item.image_url})` }}
-                    aria-hidden
-                  />
-                ) : (
-                  <div className="absolute inset-0 bg-luxury-surface-high" aria-hidden />
-                )}
-                <div className="absolute inset-0 bg-gradient-to-t from-luxury-bg/95 to-luxury-bg/20" />
-                <div className="absolute bottom-0 left-0 w-full p-5">
-                  <h3 className="font-serif text-lg font-light text-luxury-on-surface">{item.name}</h3>
-                  <p className="mt-1 font-mono text-sm text-luxury-on-surface-variant">
-                    ${Number(item.price).toFixed(2)}
-                  </p>
-                </div>
-              </button>
+              <RevealItem key={item.id} className="col-span-1 md:col-span-4">
+                <button
+                  type="button"
+                  disabled={!item.is_available}
+                  onClick={() => item.is_available && setDetailItem(item)}
+                  className="carved-edge group relative h-full w-full overflow-hidden rounded-lg bg-luxury-surface-low/50 text-left shadow-[0_8px_30px_rgb(0,0,0,0.5)] transition-shadow hover:shadow-[0_8px_40px_rgba(212,175,55,0.12)] disabled:opacity-50"
+                >
+                  {item.image_url ? (
+                    <div
+                      className="absolute inset-0 bg-cover bg-center opacity-80 transition-transform duration-700 group-hover:scale-105"
+                      style={{ backgroundImage: `url(${item.image_url})` }}
+                      aria-hidden
+                    />
+                  ) : (
+                    <div className="absolute inset-0 bg-luxury-surface-high" aria-hidden />
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-luxury-bg/95 to-luxury-bg/20" />
+                  <div className="absolute bottom-0 left-0 w-full p-5">
+                    <h3 className="font-serif text-lg font-light text-luxury-on-surface">{item.name}</h3>
+                    <p className="mt-1 font-mono text-sm text-luxury-on-surface-variant">
+                      ${Number(item.price).toFixed(2)}
+                    </p>
+                  </div>
+                </button>
+              </RevealItem>
             ))}
-          </section>
+          </Reveal>
         )}
       </div>
 
@@ -455,7 +480,7 @@ export default function GuestScanPage() {
                 document.getElementById('guest-order-status-dock')?.focus?.();
                 document.getElementById('guest-order-status-dock')?.scrollIntoView({
                   block: 'nearest',
-                  behavior: 'smooth',
+                  behavior: scrollBehavior(),
                 });
               });
             }
