@@ -75,10 +75,14 @@ describe('enqueueSessionPendingOrders (TAB-42)', () => {
     pending: { id: string }[],
     failed: { order_id: string }[]
   ) {
-    const orders = pending.map((order) => ({
+    const orders: Array<{
+      id: string;
+      session_id: string;
+      status: 'pending_payment' | 'received';
+    }> = pending.map((order) => ({
       id: order.id,
       session_id: sessionId,
-      status: 'pending_payment' as const,
+      status: 'pending_payment',
     }));
     const orderStatus = new Map<string, 'pending_payment' | 'received'>();
     orders.forEach((order) => orderStatus.set(order.id, 'pending_payment'));
