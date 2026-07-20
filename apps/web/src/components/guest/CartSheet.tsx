@@ -58,6 +58,15 @@ export function CartSheet({
           <div className="mb-6 space-y-3">
             {items.map((item) => (
               <div key={item.lineKey} className="carved-edge flex gap-3 bg-flagship-surface/50 p-4">
+                {item.image_url ? (
+                  <div
+                    className="h-16 w-16 shrink-0 rounded-md bg-cover bg-center"
+                    style={{ backgroundImage: `url(${item.image_url})` }}
+                    aria-hidden
+                  />
+                ) : (
+                  <div className="h-16 w-16 shrink-0 rounded-md bg-luxury-surface-high" aria-hidden />
+                )}
                 <div className="flex-1">
                   <p className="m-0 font-serif font-light text-gold">
                     {item.quantity}× {item.name}
@@ -104,9 +113,23 @@ export function CartSheet({
           className="flex flex-1 items-center gap-4 border-none bg-transparent text-left"
           aria-label="View cart"
         >
-          <div className="relative flex h-3 w-3">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-gold/60 opacity-75" />
-            <span className="relative inline-flex h-3 w-3 rounded-full bg-gold/80 shadow-[0_0_8px_rgba(212,175,55,0.5)]" />
+          <div className="flex -space-x-3">
+            {items.slice(0, 3).map((item) =>
+              item.image_url ? (
+                <div
+                  key={item.lineKey}
+                  className="h-9 w-9 rounded-full border-2 border-[#1A1A1A] bg-cover bg-center shadow-sm"
+                  style={{ backgroundImage: `url(${item.image_url})` }}
+                  aria-hidden
+                />
+              ) : (
+                <div
+                  key={item.lineKey}
+                  className="h-9 w-9 rounded-full border-2 border-[#1A1A1A] bg-luxury-surface-high"
+                  aria-hidden
+                />
+              )
+            )}
           </div>
           <div>
             <p className="label-caps text-[10px] tracking-widest text-flagship-on-surface-variant">
