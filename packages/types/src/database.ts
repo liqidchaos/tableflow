@@ -34,7 +34,11 @@ export interface Venue {
   brand_color: string;
   address: string | null;
   city: string | null;
+  state: string | null;
+  postal_code: string | null;
   country: string;
+  /** Opt-in: Stripe Tax calculations incur live-mode fees and require an active tax registration. */
+  tax_enabled: boolean;
   timezone: string;
   currency: string;
   pos_provider: string | null;
@@ -210,12 +214,33 @@ export interface Payment {
   amount: number;
   tip_amount: number;
   platform_fee: number;
+  tax_amount: number;
+  stripe_tax_calculation_id: string | null;
   currency: string;
   status: PaymentStatus;
   payment_method_type: string | null;
   split_type: string | null;
   created_at: string;
   captured_at: string | null;
+}
+
+export type VenueInvoiceStatus = 'draft' | 'open' | 'paid' | 'void' | 'uncollectible';
+
+export interface VenueInvoice {
+  id: string;
+  venue_id: string;
+  stripe_invoice_id: string;
+  stripe_invoice_item_id: string | null;
+  description: string;
+  amount: number;
+  currency: string;
+  status: VenueInvoiceStatus;
+  hosted_invoice_url: string | null;
+  invoice_pdf: string | null;
+  due_date: string | null;
+  created_at: string;
+  paid_at: string | null;
+  voided_at: string | null;
 }
 
 export interface Staff {

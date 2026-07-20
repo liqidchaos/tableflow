@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { Button } from '@tableflow/ui';
 import { OperatorPageHeader } from '@/components/dashboard/OperatorPageHeader';
 import { useVenueContext } from '@/hooks/useVenueContext';
-import type { Venue } from '@tableflow/types';
+import type { Venue, VenueInvoice } from '@tableflow/types';
 
 interface BillingStatus {
   plan: string;
@@ -25,12 +25,17 @@ export default function SettingsPage() {
   } | null>(null);
   const [billing, setBilling] = useState<BillingStatus | null>(null);
   const [billingLoading, setBillingLoading] = useState(false);
+  const [invoices, setInvoices] = useState<VenueInvoice[]>([]);
+  const [taxSaving, setTaxSaving] = useState(false);
 
   useEffect(() => {
     if (!loading && venueId) {
       authFetch(`/api/venues/${venueId}`).then((r) => r.json()).then(setVenue);
       authFetch('/api/auth/stripe-status').then((r) => r.json()).then(setStripeStatus);
       authFetch('/api/billing/status').then((r) => r.json()).then(setBilling);
+      authFetch(`/api/venues/${venueId}/invoices`)
+        .then((r) => r.json())
+        .then((d) => setInvoices(d.invoices ?? []));
     }
   }, [loading, venueId, authFetch]);
 
@@ -46,6 +51,29 @@ export default function SettingsPage() {
         brand_color: venue.brand_color,
       }),
     });
+  }
+
+  async function saveTaxSettings(e: React.FormEvent) {
+    e.preventDefault();
+    setTaxSaving(true);
+    try {
+      const res = await authFetch(`/api/venues/${venueId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          address: venue.address,
+          city: venue.city,
+          state: venue.state,
+          postal_code: venue.postal_code,
+          country: venue.country,
+          tax_enabled: venue.tax_enabled,
+        }),
+      });
+      const data = await res.json();
+      setVenue((v) => ({ ...v, ...data }));
+    } finally {
+      setTaxSaving(false);
+    }
   }
 
   async function connectStripe() {
@@ -198,6 +226,101 @@ export default function SettingsPage() {
         </p>
         {!stripeStatus?.onboarded && <Button onClick={connectStripe}>Connect Stripe</Button>}
       </div>
+
+      <form onSubmit={saveTaxSettings} className="card mb-6 mt-6 max-w-lg">
+        <h3 className="mb-3 font-serif text-lg font-light">Business Address &amp; Tax</h3>
+        <p className="mb-4 text-luxury-on-surface-variant">
+          Diners dine in on-premises, so we use your venue&apos;s own address to calculate sales
+          tax at the point of sale. Add a Stripe Tax registration for your jurisdiction in the
+          Stripe Dashboard before enabling this.
+        </p>
+        <div className="grid gap-4">
+          <label className="grid gap-1.5 text-sm">
+            Street Address
+            <input
+              className="input"
+              value={venue.address ?? ''}
+              onChange={(e) => setVenue({ ...venue, address: e.target.value })}
+            />
+          </label>
+          <div className="grid grid-cols-3 gap-3">
+            <label className="grid gap-1.5 text-sm">
+              City
+              <input
+                className="input"
+                value={venue.city ?? ''}
+                onChange={(e) => setVenue({ ...venue, city: e.target.value })}
+              />
+            </label>
+            <label className="grid gap-1.5 text-sm">
+              State
+              <input
+                className="input"
+                value={venue.state ?? ''}
+                onChange={(e) => setVenue({ ...venue, state: e.target.value })}
+              />
+            </label>
+            <label className="grid gap-1.5 text-sm">
+              ZIP / Postal Code
+              <input
+                className="input"
+                value={venue.postal_code ?? ''}
+                onChange={(e) => setVenue({ ...venue, postal_code: e.target.value })}
+              />
+            </label>
+          </div>
+          <label className="grid gap-1.5 text-sm">
+            Country
+            <input
+              className="input"
+              value={venue.country ?? 'US'}
+              onChange={(e) => setVenue({ ...venue, country: e.target.value })}
+            />
+          </label>
+          <label className="flex items-center gap-2 text-sm">
+            <input
+              type="checkbox"
+              checked={venue.tax_enabled ?? false}
+              onChange={(e) => setVenue({ ...venue, tax_enabled: e.target.checked })}
+            />
+            Automatically calculate and collect sales tax on diner orders
+          </label>
+          <Button type="submit" loading={taxSaving}>
+            Save Tax Settings
+          </Button>
+        </div>
+      </form>
+
+      {invoices.length > 0 && (
+        <div className="card max-w-lg">
+          <h3 className="mb-3 font-serif text-lg font-light">Invoices</h3>
+          <div className="grid gap-3">
+            {invoices.map((invoice) => (
+              <div
+                key={invoice.id}
+                className="flex items-center justify-between border-b border-luxury-outline/20 pb-2 text-sm last:border-0 last:pb-0"
+              >
+                <div>
+                  <p className="text-luxury-on-surface">{invoice.description}</p>
+                  <p className="text-luxury-on-surface-variant">
+                    ${invoice.amount.toFixed(2)} · <span className="capitalize">{invoice.status}</span>
+                  </p>
+                </div>
+                {invoice.hosted_invoice_url && invoice.status !== 'paid' && (
+                  <a
+                    href={invoice.hosted_invoice_url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-gold underline"
+                  >
+                    Pay
+                  </a>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

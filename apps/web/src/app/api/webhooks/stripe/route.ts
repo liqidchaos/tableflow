@@ -171,6 +171,42 @@ export async function POST(req: Request) {
         await query;
         break;
       }
+      case 'invoice.paid': {
+        // Only matches rows created via POST /api/venues/[venue_id]/invoices (one-off charges);
+        // SaaS subscription invoices from Checkout have no venue_invoices row and no-op here.
+        const invoice = event.data.object as Stripe.Invoice;
+        const { data: venueInvoice } = await supabase
+          .from('venue_invoices')
+          .update({ status: 'paid', paid_at: new Date().toISOString() })
+          .eq('stripe_invoice_id', invoice.id)
+          .select('id, venue_id')
+          .single();
+        if (venueInvoice) {
+          await auditLog(venueInvoice.venue_id, null, 'invoice.paid', 'venue_invoice', venueInvoice.id);
+        }
+        break;
+      }
+      case 'invoice.payment_failed': {
+        const invoice = event.data.object as Stripe.Invoice;
+        await supabase
+          .from('venue_invoices')
+          .update({ status: 'open' })
+          .eq('stripe_invoice_id', invoice.id);
+        break;
+      }
+      case 'invoice.voided':
+      case 'invoice.marked_uncollectible': {
+        const invoice = event.data.object as Stripe.Invoice;
+        const status = event.type === 'invoice.voided' ? 'void' : 'uncollectible';
+        await supabase
+          .from('venue_invoices')
+          .update({
+            status,
+            ...(status === 'void' ? { voided_at: new Date().toISOString() } : {}),
+          })
+          .eq('stripe_invoice_id', invoice.id);
+        break;
+      }
       case 'checkout.session.completed': {
         const session = event.data.object as Stripe.Checkout.Session;
         if (session.mode === 'subscription' && session.metadata?.venue_id) {
