@@ -53,7 +53,7 @@ export function ScanScreen({ navigation }: Props) {
           guestId: data.guest_id,
           tabMode: data.tab_mode,
           currency: data.currency,
-          brandColor: data.brand_color ?? theme.colors.flow,
+          brandColor: data.brand_color ?? theme.colors.gold,
         });
         navigation.replace('Menu');
       } catch (err) {
@@ -104,7 +104,7 @@ export function ScanScreen({ navigation }: Props) {
         <TextInput
           style={styles.input}
           placeholder="tf_t_xxxx..."
-          placeholderTextColor={theme.colors.muted}
+          placeholderTextColor={theme.colors.onSurfaceVariant}
           value={qrCode}
           onChangeText={(text) => {
             setQrCode(text);
@@ -114,7 +114,7 @@ export function ScanScreen({ navigation }: Props) {
         />
         {error ? <Text style={styles.error}>{error}</Text> : null}
         {loading ? (
-          <ActivityIndicator color={theme.colors.flow} />
+          <ActivityIndicator color={theme.colors.gold} />
         ) : (
           <TouchableOpacity style={styles.button} onPress={() => handleScan()}>
             <Text style={styles.buttonText}>Open Menu</Text>
@@ -157,7 +157,7 @@ const CORNER_SIZE = 24;
 const CORNER_WIDTH = 4;
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: theme.colors.ink },
+  container: { flex: 1, backgroundColor: theme.colors.bg },
   cameraWrap: { flex: 1, position: 'relative' },
   camera: { flex: 1 },
   scanTarget: {
@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: CORNER_SIZE,
     height: CORNER_SIZE,
-    borderColor: theme.colors.flow,
+    borderColor: theme.colors.gold,
   },
   cornerTL: { top: '30%', left: '20%', borderTopWidth: CORNER_WIDTH, borderLeftWidth: CORNER_WIDTH, borderTopLeftRadius: 8 },
   cornerTR: { top: '30%', right: '20%', borderTopWidth: CORNER_WIDTH, borderRightWidth: CORNER_WIDTH, borderTopRightRadius: 8 },
@@ -179,32 +179,55 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 40,
     alignSelf: 'center',
-    color: '#FFF',
+    color: theme.colors.onSurface,
     fontFamily: theme.fonts.display,
     fontSize: 16,
     textAlign: 'center',
     width: '100%',
   },
-  manualSection: { backgroundColor: theme.colors.paper, padding: 24, borderTopLeftRadius: theme.radii.xl, borderTopRightRadius: theme.radii.xl },
-  title: { fontSize: 24, fontFamily: theme.fonts.display, marginBottom: 4, color: theme.colors.ink },
-  subtitle: { fontSize: 15, fontFamily: theme.fonts.sans, color: theme.colors.muted, marginBottom: 16 },
-  permissionBtn: { padding: 16, backgroundColor: theme.colors.flowLight, borderRadius: theme.radii.md, margin: 24, alignItems: 'center' },
-  permissionText: { color: theme.colors.flow, fontFamily: theme.fonts.sansBold },
+  manualSection: {
+    backgroundColor: theme.colors.surfaceLow,
+    padding: 24,
+    borderTopLeftRadius: theme.radii.xl,
+    borderTopRightRadius: theme.radii.xl,
+    borderTopWidth: 1,
+    borderColor: theme.colors.outlineVariant,
+  },
+  title: { fontSize: 26, fontFamily: theme.fonts.serif, marginBottom: 4, color: theme.colors.onSurface },
+  subtitle: { fontSize: 15, fontFamily: theme.fonts.sans, color: theme.colors.onSurfaceVariant, marginBottom: 16 },
+  permissionBtn: {
+    padding: 16,
+    backgroundColor: theme.colors.surfaceLow,
+    borderWidth: 1,
+    borderColor: theme.colors.gold,
+    borderRadius: theme.radii.md,
+    margin: 24,
+    alignItems: 'center',
+  },
+  permissionText: { color: theme.colors.gold, fontFamily: theme.fonts.sansBold },
   input: {
     backgroundColor: theme.colors.surface,
-    borderWidth: 1.5,
-    borderColor: theme.colors.border,
+    borderWidth: 1,
+    borderColor: theme.colors.outlineVariant,
     borderRadius: theme.radii.md,
     padding: 14,
     marginBottom: 16,
     fontSize: 15,
+    color: theme.colors.onSurface,
     fontFamily: theme.fonts.sans,
   },
-  button: { backgroundColor: theme.colors.flow, padding: 16, borderRadius: theme.radii.full, alignItems: 'center' },
-  buttonText: { color: '#FFF', fontFamily: theme.fonts.display, fontSize: 15 },
+  button: { backgroundColor: theme.colors.gold, padding: 16, borderRadius: theme.radii.full, alignItems: 'center' },
+  buttonText: { color: theme.colors.goldOn, fontFamily: theme.fonts.display, fontSize: 15 },
   error: { color: theme.colors.error, marginBottom: 12, fontFamily: theme.fonts.sans },
   link: { marginTop: 16, alignItems: 'center' },
-  linkText: { color: theme.colors.flow, fontFamily: theme.fonts.sansBold },
-  nfcBox: { marginTop: 16, padding: 16, backgroundColor: theme.colors.surface, borderRadius: theme.radii.lg, borderWidth: 1, borderColor: theme.colors.border },
-  nfcHint: { color: theme.colors.muted, fontSize: 13, marginBottom: 8, fontFamily: theme.fonts.sans },
+  linkText: { color: theme.colors.gold, fontFamily: theme.fonts.sansBold },
+  nfcBox: {
+    marginTop: 16,
+    padding: 16,
+    backgroundColor: theme.colors.surface,
+    borderRadius: theme.radii.lg,
+    borderWidth: 1,
+    borderColor: theme.colors.outlineVariant,
+  },
+  nfcHint: { color: theme.colors.onSurfaceVariant, fontSize: 13, marginBottom: 8, fontFamily: theme.fonts.sans },
 });

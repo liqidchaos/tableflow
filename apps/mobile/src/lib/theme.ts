@@ -1,46 +1,52 @@
-/** Shared design tokens. Mirrors apps/web globals.css */
+/**
+ * Shared design tokens — mirrors the "Institutional Luxury" system in
+ * apps/web/src/app/globals.css and the Stitch "TableFlow Greenfield UX Redesign"
+ * (Guest Concierge / Floor Manager, Luxury variant). Keep these two in sync.
+ */
 export const theme = {
   colors: {
-    flow: '#FF4D6D',
-    flowLight: '#FFF0F3',
-    flowDark: '#E63D5C',
-    citrus: '#6FCF3C',
-    citrusLight: '#EDF9E6',
-    sun: '#FFB800',
-    sunLight: '#FFF8E6',
-    grape: '#7B5CFA',
-    grapeLight: '#F0EBFF',
-    ink: '#16151C',
-    paper: '#FAFAF9',
-    surface: '#FFFFFF',
-    border: '#EAE7E0',
-    muted: '#6B7280',
-    error: '#DC2626',
-    luxury: {
-      bg: '#131313',
-      surface: '#201f1f',
-      surfaceLow: '#1c1b1b',
-      surfaceLowest: '#0e0e0e',
-      surfaceHigh: '#2a2a2a',
-      onSurface: '#e5e2e1',
-      onSurfaceVariant: '#d0c5af',
-      outlineVariant: '#4d4635',
-    },
+    // Surfaces (dark, near-black — the whole app is dark-mode by design, not just accents)
+    bg: '#131313',
+    surface: '#201f1f',
+    surfaceLow: '#1c1b1b',
+    surfaceLowest: '#0e0e0e',
+    surfaceHigh: '#2a2a2a',
+    surfaceHighest: '#353534',
+
+    // Text / outlines on dark surfaces
+    onSurface: '#e5e2e1',
+    onSurfaceVariant: '#d0c5af',
+    outline: '#99907c',
+    outlineVariant: '#4d4635',
+
+    // Brand accent — gold. `brandColor` from venue settings overrides this per-venue.
     gold: '#f2ca50',
     goldContainer: '#d4af37',
+    goldOn: '#241a00',
+    goldGlow: 'rgba(212, 175, 55, 0.15)',
+
+    // Semantic status. `error` is a light tone for text/icons on dark surfaces;
+    // `errorContainer` is a solid dark fill for buttons/badges (matches Material dark theme pairing).
+    citrus: '#6fcf3c',
+    sun: '#f2ca50',
+    error: '#ffb4ab',
+    errorContainer: '#93000a',
+
+    // Deprecated aliases kept temporarily for any straggler references.
+    muted: '#d0c5af',
   },
   fonts: {
     display: 'SpaceGrotesk_600SemiBold',
     serif: 'PlayfairDisplay_400Regular',
+    serifItalic: 'PlayfairDisplay_400Regular_Italic',
     sans: 'Inter_400Regular',
     sansBold: 'Inter_600SemiBold',
-    mono: 'Inter_600SemiBold',
   },
   radii: {
-    sm: 6,
-    md: 12,
-    lg: 20,
-    xl: 24,
+    sm: 4,
+    md: 6,
+    lg: 8,
+    xl: 12,
     full: 9999,
   },
   spacing: {
@@ -55,9 +61,10 @@ export const theme = {
     16: 64,
   },
   shadows: {
-    sm: { shadowColor: '#16151C', shadowOpacity: 0.06, shadowRadius: 8, elevation: 2 },
-    md: { shadowColor: '#16151C', shadowOpacity: 0.08, shadowRadius: 16, elevation: 4 },
-    lg: { shadowColor: '#16151C', shadowOpacity: 0.12, shadowRadius: 32, elevation: 8 },
+    sm: { shadowColor: '#000', shadowOpacity: 0.3, shadowRadius: 8, elevation: 2 },
+    md: { shadowColor: '#000', shadowOpacity: 0.35, shadowRadius: 16, elevation: 4 },
+    lg: { shadowColor: '#000', shadowOpacity: 0.4, shadowRadius: 32, elevation: 8 },
+    gold: { shadowColor: '#d4af37', shadowOpacity: 0.25, shadowRadius: 20, elevation: 6 },
   },
 } as const;
 
@@ -81,6 +88,6 @@ export function statusColor(status: string): string {
     case 'cancelled':
       return theme.colors.error;
     default:
-      return theme.colors.luxury.onSurface;
+      return theme.colors.onSurfaceVariant;
   }
 }

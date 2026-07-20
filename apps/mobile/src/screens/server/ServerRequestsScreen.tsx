@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { apiFetch } from '../../lib/api';
 import { getStaffCredentials } from './ServerLoginScreen';
+import { theme } from '../../lib/theme';
 import type { ItemRequest } from '@tableflow/types';
 import type { RootStackParamList } from '../../navigation/types';
 
@@ -66,12 +67,19 @@ export function ServerRequestsScreen({ route }: Props) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#FAFAF8', padding: 16 },
-  title: { fontSize: 22, fontFamily: 'Fraunces_600SemiBold', marginBottom: 16 },
-  card: { backgroundColor: '#FFF', borderRadius: 12, padding: 16, marginBottom: 8 },
-  type: { fontFamily: 'Inter_600SemiBold', textTransform: 'capitalize' },
-  custom: { color: '#6B7280', marginTop: 4, fontFamily: 'Inter_400Regular' },
-  btn: { marginTop: 12, backgroundColor: '#1A7F5A', padding: 10, borderRadius: 8, alignItems: 'center' },
-  btnText: { color: '#FFF', fontFamily: 'Inter_600SemiBold' },
-  empty: { textAlign: 'center', color: '#6B7280', marginTop: 40, fontFamily: 'Inter_400Regular' },
+  container: { flex: 1, backgroundColor: theme.colors.bg, padding: 16 },
+  title: { fontSize: 22, fontFamily: theme.fonts.serif, marginBottom: 16, color: theme.colors.onSurface },
+  card: {
+    backgroundColor: theme.colors.surfaceLow,
+    borderRadius: theme.radii.lg,
+    borderWidth: 1,
+    borderColor: theme.colors.outlineVariant,
+    padding: 16,
+    marginBottom: 8,
+  },
+  type: { fontFamily: theme.fonts.sansBold, textTransform: 'capitalize', color: theme.colors.onSurface },
+  custom: { color: theme.colors.onSurfaceVariant, marginTop: 4, fontFamily: theme.fonts.sans },
+  btn: { marginTop: 12, backgroundColor: theme.colors.citrus, padding: 10, borderRadius: theme.radii.md, alignItems: 'center' },
+  btnText: { color: theme.colors.goldOn, fontFamily: theme.fonts.sansBold },
+  empty: { textAlign: 'center', color: theme.colors.onSurfaceVariant, marginTop: 40, fontFamily: theme.fonts.sans },
 });

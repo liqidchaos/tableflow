@@ -12,6 +12,7 @@ export interface CartItem {
   modifierPriceDeltas?: number[];
   special_instructions?: string;
   course: string;
+  image_url?: string;
 }
 
 interface CartContextValue {
@@ -20,6 +21,7 @@ interface CartContextValue {
   removeItem: (lineKey: string) => void;
   clearCart: () => void;
   total: number;
+  itemCount: number;
 }
 
 const CartContext = createContext<CartContextValue | null>(null);
@@ -47,9 +49,10 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const clearCart = useCallback(() => setItems([]), []);
 
   const total = useMemo(() => cartTotal(items), [items]);
+  const itemCount = useMemo(() => items.reduce((n, i) => n + i.quantity, 0), [items]);
 
   return (
-    <CartContext.Provider value={{ items, addItem, removeItem, clearCart, total }}>
+    <CartContext.Provider value={{ items, addItem, removeItem, clearCart, total, itemCount }}>
       {children}
     </CartContext.Provider>
   );

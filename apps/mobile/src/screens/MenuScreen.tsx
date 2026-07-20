@@ -13,6 +13,7 @@ import {
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { apiFetch } from '../lib/api';
 import { useSession } from '../context/SessionContext';
+import { useCart } from '../context/CartContext';
 import { useOrderStatus } from '../hooks/useOrderStatus';
 import { registerGuestPushNotifications } from '../utils/notifications';
 import { theme, statusColor } from '../lib/theme';
@@ -23,6 +24,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Menu'>;
 
 export function MenuScreen({ navigation }: Props) {
   const { venueId, sessionId, sessionToken, guestId, tableName, venueName, brandColor, activeOrderId } = useSession();
+  const { itemCount: cartItemCount, total: cartTotal } = useCart();
   const [categories, setCategories] = useState<MenuCategoryWithItems[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
@@ -30,7 +32,7 @@ export function MenuScreen({ navigation }: Props) {
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
   const orderStatus = useOrderStatus(activeOrderId ?? '', sessionToken ?? undefined);
 
-  const accent = brandColor ?? theme.colors.flow;
+  const accent = brandColor ?? theme.colors.gold;
 
   useEffect(() => {
     if (!venueId) return;
@@ -131,10 +133,10 @@ export function MenuScreen({ navigation }: Props) {
           {['vegan', 'vegetarian', 'gluten-free'].map((tag) => (
             <TouchableOpacity
               key={tag}
-              style={[styles.tag, dietary === tag && { backgroundColor: accent }]}
+              style={[styles.tag, dietary === tag && { backgroundColor: accent, borderColor: accent }]}
               onPress={() => setDietary(dietary === tag ? null : tag)}
             >
-              <Text style={[styles.tagText, dietary === tag && { color: '#FFF' }]}>{tag}</Text>
+              <Text style={[styles.tagText, dietary === tag && { color: theme.colors.goldOn }]}>{tag}</Text>
             </TouchableOpacity>
           ))}
         </View>
@@ -146,7 +148,6 @@ export function MenuScreen({ navigation }: Props) {
         contentContainerStyle={{ padding: 16, paddingBottom: 100, flexGrow: 1 }}
         ListEmptyComponent={
           <View style={styles.emptyState}>
-            <Text style={styles.emptyEmoji}>🍽</Text>
             <Text style={styles.emptyTitle}>{hasFilters ? 'No items match' : 'Menu is empty'}</Text>
             <Text style={styles.emptyText}>
               {hasFilters ? 'Try adjusting your search or dietary filters.' : 'Check back soon.'}
@@ -191,7 +192,9 @@ export function MenuScreen({ navigation }: Props) {
           style={[styles.cartButton, { backgroundColor: accent }]}
           onPress={() => navigation.navigate('Cart')}
         >
-          <Text style={styles.cartButtonText}>View Cart</Text>
+          <Text style={styles.cartButtonText}>
+            View Cart{cartItemCount > 0 ? ` · ${cartItemCount} item${cartItemCount !== 1 ? 's' : ''} · $${cartTotal.toFixed(2)}` : ''}
+          </Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -199,33 +202,34 @@ export function MenuScreen({ navigation }: Props) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: theme.colors.paper },
-  center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  loadingText: { marginTop: 12, color: theme.colors.muted, fontFamily: theme.fonts.sans },
-  header: { padding: 20, backgroundColor: theme.colors.surface, ...theme.shadows.sm },
-  venueName: { fontSize: 22, fontFamily: theme.fonts.display, color: theme.colors.ink },
-  tableName: { color: theme.colors.muted, marginTop: 4, fontFamily: theme.fonts.sans },
+  container: { flex: 1, backgroundColor: theme.colors.bg },
+  center: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: theme.colors.bg },
+  loadingText: { marginTop: 12, color: theme.colors.onSurfaceVariant, fontFamily: theme.fonts.sans },
+  header: { padding: 20, backgroundColor: theme.colors.bg, borderBottomWidth: 1, borderBottomColor: theme.colors.outlineVariant },
+  venueName: { fontSize: 22, fontFamily: theme.fonts.serif, color: theme.colors.onSurface },
+  tableName: { color: theme.colors.onSurfaceVariant, marginTop: 4, fontFamily: theme.fonts.sans, fontSize: 12, letterSpacing: 1.5, textTransform: 'uppercase' },
   statusBar: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 24,
     paddingVertical: 12,
-    backgroundColor: theme.colors.surface,
+    backgroundColor: theme.colors.surfaceLow,
     borderBottomWidth: 1,
-    borderBottomColor: theme.colors.border,
+    borderBottomColor: theme.colors.outlineVariant,
   },
-  statusLabel: { fontFamily: theme.fonts.display, fontSize: 14, color: theme.colors.ink },
+  statusLabel: { fontFamily: theme.fonts.sans, fontSize: 13, color: theme.colors.onSurfaceVariant },
   statusPill: { paddingHorizontal: 12, paddingVertical: 4, borderRadius: theme.radii.full },
-  statusPillText: { fontFamily: theme.fonts.sansBold, fontSize: 11, textTransform: 'uppercase', color: theme.colors.ink },
-  filters: { padding: 12, backgroundColor: theme.colors.surface, borderBottomWidth: 1, borderBottomColor: theme.colors.border },
+  statusPillText: { fontFamily: theme.fonts.sansBold, fontSize: 11, textTransform: 'uppercase', color: theme.colors.goldOn },
+  filters: { padding: 12, backgroundColor: theme.colors.bg, borderBottomWidth: 1, borderBottomColor: theme.colors.outlineVariant },
   search: {
-    backgroundColor: theme.colors.paper,
+    backgroundColor: theme.colors.surface,
     borderRadius: theme.radii.md,
     padding: 12,
     marginBottom: 8,
     borderWidth: 1,
-    borderColor: theme.colors.border,
+    borderColor: theme.colors.outlineVariant,
+    color: theme.colors.onSurface,
     fontFamily: theme.fonts.sans,
   },
   categoryTabs: { marginBottom: 8 },
@@ -233,49 +237,58 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: theme.radii.full,
-    backgroundColor: theme.colors.paper,
+    borderWidth: 1,
+    borderColor: theme.colors.outlineVariant,
+    backgroundColor: theme.colors.surface,
     marginRight: 8,
   },
-  categoryTabText: { fontSize: 13, fontFamily: theme.fonts.display, color: theme.colors.ink },
-  categoryTabTextActive: { color: '#FFF' },
+  categoryTabText: { fontSize: 12, fontFamily: theme.fonts.sansBold, letterSpacing: 0.5, color: theme.colors.onSurfaceVariant },
+  categoryTabTextActive: { color: theme.colors.goldOn },
   tagRow: { flexDirection: 'row', gap: 8, flexWrap: 'wrap' },
-  tag: { paddingHorizontal: 12, paddingVertical: 6, borderRadius: theme.radii.full, borderWidth: 1, borderColor: theme.colors.border, backgroundColor: theme.colors.surface },
-  tagText: { fontSize: 13, color: theme.colors.ink, fontFamily: theme.fonts.sans },
-  card: {
+  tag: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: theme.radii.full,
+    borderWidth: 1,
+    borderColor: theme.colors.outlineVariant,
     backgroundColor: theme.colors.surface,
+  },
+  tagText: { fontSize: 13, color: theme.colors.onSurfaceVariant, fontFamily: theme.fonts.sans },
+  card: {
+    backgroundColor: theme.colors.surfaceLow,
     borderRadius: theme.radii.lg,
+    borderWidth: 1,
+    borderColor: theme.colors.outlineVariant,
     padding: 16,
     marginBottom: 12,
-    ...theme.shadows.md,
     overflow: 'hidden',
   },
   itemImage: { width: '100%', height: 140, borderRadius: theme.radii.md, marginBottom: 12, marginHorizontal: -16, marginTop: -16, maxWidth: undefined },
   unavailable: { opacity: 0.5 },
   cardRow: { flexDirection: 'row', justifyContent: 'space-between' },
-  itemName: { fontSize: 18, fontFamily: theme.fonts.display, flex: 1 },
-  price: { fontSize: 17, fontFamily: theme.fonts.sansBold },
-  description: { color: theme.colors.muted, marginTop: 6, fontSize: 13, fontFamily: theme.fonts.sans },
-  allergens: { color: theme.colors.muted, fontSize: 12, marginTop: 4, fontFamily: theme.fonts.sans },
+  itemName: { fontSize: 17, fontFamily: theme.fonts.serif, flex: 1, color: theme.colors.onSurface },
+  price: { fontSize: 16, fontFamily: theme.fonts.sansBold, color: theme.colors.gold },
+  description: { color: theme.colors.onSurfaceVariant, marginTop: 6, fontSize: 13, fontFamily: theme.fonts.sans },
+  allergens: { color: theme.colors.onSurfaceVariant, fontSize: 12, marginTop: 4, fontFamily: theme.fonts.sans },
   soldOut: { color: theme.colors.error, fontFamily: theme.fonts.sansBold, marginTop: 8 },
   emptyState: { alignItems: 'center', paddingVertical: 48 },
-  emptyEmoji: { fontSize: 48, marginBottom: 16 },
-  emptyTitle: { fontFamily: theme.fonts.display, fontSize: 18, marginBottom: 8, color: theme.colors.ink },
-  emptyText: { color: theme.colors.muted, fontFamily: theme.fonts.sans, textAlign: 'center', marginBottom: 16 },
-  clearBtn: { borderWidth: 1.5, borderColor: theme.colors.ink, borderRadius: theme.radii.full, paddingHorizontal: 20, paddingVertical: 10 },
-  clearBtnText: { fontFamily: theme.fonts.display, color: theme.colors.ink },
+  emptyTitle: { fontFamily: theme.fonts.serif, fontSize: 18, marginBottom: 8, color: theme.colors.onSurface },
+  emptyText: { color: theme.colors.onSurfaceVariant, fontFamily: theme.fonts.sans, textAlign: 'center', marginBottom: 16 },
+  clearBtn: { borderWidth: 1, borderColor: theme.colors.gold, borderRadius: theme.radii.full, paddingHorizontal: 20, paddingVertical: 10 },
+  clearBtnText: { fontFamily: theme.fonts.sansBold, color: theme.colors.gold },
   footer: {
     position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
     padding: 16,
-    backgroundColor: theme.colors.surface,
+    backgroundColor: theme.colors.bg,
     borderTopWidth: 1,
-    borderTopColor: theme.colors.border,
+    borderTopColor: theme.colors.outlineVariant,
     gap: 8,
   },
   requestButton: { padding: 12, alignItems: 'center' },
-  requestText: { color: theme.colors.muted, fontFamily: theme.fonts.display },
+  requestText: { color: theme.colors.onSurfaceVariant, fontFamily: theme.fonts.sans, fontSize: 13 },
   cartButton: { padding: 16, borderRadius: theme.radii.full, alignItems: 'center' },
-  cartButtonText: { color: '#FFF', fontFamily: theme.fonts.display, fontSize: 15 },
+  cartButtonText: { color: theme.colors.goldOn, fontFamily: theme.fonts.sansBold, fontSize: 15, letterSpacing: 0.5 },
 });

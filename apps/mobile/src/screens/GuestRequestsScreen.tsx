@@ -26,7 +26,7 @@ export function GuestRequestsScreen({ navigation }: Props) {
   const { sessionId, sessionToken, tableId, brandColor } = useSession();
   const [loading, setLoading] = useState<string | null>(null);
   const { requests } = useGuestRequests(sessionId, sessionToken);
-  const accent = brandColor ?? theme.colors.flow;
+  const accent = brandColor ?? theme.colors.gold;
 
   async function sendRequest(requestType: typeof REQUEST_TYPES[number]['type']) {
     if (!sessionId || !sessionToken || !tableId) return;
@@ -70,7 +70,7 @@ export function GuestRequestsScreen({ navigation }: Props) {
               <Text style={styles.historyLabel}>
                 {req.request_type === 'custom' ? req.custom_text : req.request_type}
               </Text>
-              <Text style={[styles.historyStatus, { color: STATUS_COLORS[req.status] ?? '#6B7280' }]}>
+              <Text style={[styles.historyStatus, { color: STATUS_COLORS[req.status] ?? theme.colors.onSurfaceVariant }]}>
                 {requestStatusLabel(req.status)}
               </Text>
             </View>
@@ -86,16 +86,30 @@ export function GuestRequestsScreen({ navigation }: Props) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#FAFAF8' },
-  title: { fontSize: 28, fontWeight: '600', marginBottom: 8 },
-  subtitle: { color: '#6B7280', marginBottom: 32 },
-  button: { backgroundColor: '#FFF', padding: 20, borderRadius: 12, marginBottom: 12, borderWidth: 1.5, alignItems: 'center' },
-  buttonText: { fontWeight: '600', fontSize: 16 },
-  historyBox: { marginTop: 32, backgroundColor: '#FFF', borderRadius: 12, padding: 16 },
-  historyTitle: { fontWeight: '600', fontSize: 16, marginBottom: 12 },
-  historyRow: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 10, borderTopWidth: 1, borderTopColor: '#E8E6E1' },
-  historyLabel: { textTransform: 'capitalize', flex: 1 },
-  historyStatus: { fontWeight: '600', fontSize: 13 },
+  container: { flex: 1, backgroundColor: theme.colors.bg },
+  title: { fontSize: 28, fontFamily: theme.fonts.serif, marginBottom: 8, color: theme.colors.onSurface },
+  subtitle: { color: theme.colors.onSurfaceVariant, marginBottom: 32, fontFamily: theme.fonts.sans },
+  button: {
+    backgroundColor: theme.colors.surfaceLow,
+    padding: 20,
+    borderRadius: theme.radii.lg,
+    marginBottom: 12,
+    borderWidth: 1,
+    alignItems: 'center',
+  },
+  buttonText: { fontFamily: theme.fonts.sansBold, fontSize: 16 },
+  historyBox: {
+    marginTop: 32,
+    backgroundColor: theme.colors.surfaceLow,
+    borderRadius: theme.radii.lg,
+    borderWidth: 1,
+    borderColor: theme.colors.outlineVariant,
+    padding: 16,
+  },
+  historyTitle: { fontFamily: theme.fonts.sansBold, fontSize: 16, marginBottom: 12, color: theme.colors.onSurface },
+  historyRow: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 10, borderTopWidth: 1, borderTopColor: theme.colors.outlineVariant },
+  historyLabel: { textTransform: 'capitalize', flex: 1, fontFamily: theme.fonts.sans, color: theme.colors.onSurface },
+  historyStatus: { fontFamily: theme.fonts.sansBold, fontSize: 13 },
   backBtn: { marginTop: 24, alignItems: 'center', padding: 12 },
-  backText: { fontWeight: '600' },
+  backText: { fontFamily: theme.fonts.sansBold },
 });

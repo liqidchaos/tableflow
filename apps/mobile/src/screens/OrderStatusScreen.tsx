@@ -34,7 +34,7 @@ export function OrderStatusScreen({ route, navigation }: Props) {
   const { order, loading } = useOrderDetail(orderId);
   const [tabTotal, setTabTotal] = useState(0);
   const currentIndex = STEPS.indexOf(status as (typeof STEPS)[number]);
-  const accent = brandColor ?? theme.colors.flow;
+  const accent = brandColor ?? theme.colors.gold;
 
   useEffect(() => {
     if (!sessionId || !sessionToken) return;
@@ -121,33 +121,40 @@ export function OrderStatusScreen({ route, navigation }: Props) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: theme.colors.paper },
+  container: { flex: 1, backgroundColor: theme.colors.bg },
   content: { padding: 24, alignItems: 'stretch' },
-  title: { fontSize: 28, fontFamily: theme.fonts.display, marginBottom: 16, textAlign: 'center', color: theme.colors.ink },
+  title: { fontSize: 28, fontFamily: theme.fonts.serif, marginBottom: 16, textAlign: 'center', color: theme.colors.onSurface },
   statusPill: { alignSelf: 'center', paddingHorizontal: 20, paddingVertical: 10, borderRadius: theme.radii.full, marginBottom: 24 },
-  statusPillText: { fontFamily: theme.fonts.sansBold, fontSize: 14, textTransform: 'uppercase', color: theme.colors.ink },
+  statusPillText: { fontFamily: theme.fonts.sansBold, fontSize: 13, textTransform: 'uppercase', letterSpacing: 0.5, color: theme.colors.goldOn },
   steps: { flexDirection: 'row', gap: 6, marginBottom: 24 },
   step: { alignItems: 'center', flex: 1 },
-  bar: { width: '100%', height: 6, borderRadius: theme.radii.full, backgroundColor: theme.colors.border, marginBottom: 8 },
-  label: { fontSize: 10, color: theme.colors.muted, textTransform: 'uppercase', textAlign: 'center', fontFamily: theme.fonts.sans },
-  labelActive: { color: theme.colors.ink, fontFamily: theme.fonts.sansBold },
-  itemsBox: { backgroundColor: theme.colors.surface, borderRadius: theme.radii.lg, padding: 16, marginBottom: 20, ...theme.shadows.md },
-  itemsTitle: { fontFamily: theme.fonts.display, fontSize: 16, marginBottom: 12 },
-  itemRow: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 8, borderTopWidth: 1, borderTopColor: theme.colors.border },
-  itemName: { fontFamily: theme.fonts.sans, flex: 1 },
-  itemPrice: { fontFamily: theme.fonts.sansBold },
+  bar: { width: '100%', height: 4, borderRadius: theme.radii.full, backgroundColor: theme.colors.outlineVariant, marginBottom: 8 },
+  label: { fontSize: 10, color: theme.colors.onSurfaceVariant, textTransform: 'uppercase', letterSpacing: 0.5, textAlign: 'center', fontFamily: theme.fonts.sans },
+  labelActive: { color: theme.colors.onSurface, fontFamily: theme.fonts.sansBold },
+  itemsBox: {
+    backgroundColor: theme.colors.surfaceLow,
+    borderRadius: theme.radii.lg,
+    borderWidth: 1,
+    borderColor: theme.colors.outlineVariant,
+    padding: 16,
+    marginBottom: 20,
+  },
+  itemsTitle: { fontFamily: theme.fonts.serif, fontSize: 16, marginBottom: 12, color: theme.colors.onSurface },
+  itemRow: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 8, borderTopWidth: 1, borderTopColor: theme.colors.outlineVariant },
+  itemName: { fontFamily: theme.fonts.sans, flex: 1, color: theme.colors.onSurface },
+  itemPrice: { fontFamily: theme.fonts.sansBold, color: theme.colors.onSurface },
   secondaryBtn: {
-    borderWidth: 1.5,
-    borderColor: theme.colors.ink,
+    borderWidth: 1,
+    borderColor: theme.colors.outlineVariant,
     borderRadius: theme.radii.full,
     padding: 16,
     alignItems: 'center',
     marginBottom: 12,
-    backgroundColor: theme.colors.surface,
+    backgroundColor: theme.colors.surfaceLow,
   },
-  secondaryBtnText: { fontFamily: theme.fonts.display, color: theme.colors.ink },
+  secondaryBtnText: { fontFamily: theme.fonts.sansBold, color: theme.colors.onSurface },
   primaryBtn: { padding: 16, borderRadius: theme.radii.full, alignItems: 'center', marginBottom: 12 },
-  primaryBtnText: { color: '#FFF', fontFamily: theme.fonts.display, fontSize: 15 },
+  primaryBtnText: { color: theme.colors.goldOn, fontFamily: theme.fonts.sansBold, fontSize: 15, letterSpacing: 0.5 },
   linkBtn: { alignItems: 'center', padding: 12 },
-  linkBtnText: { fontFamily: theme.fonts.display },
+  linkBtnText: { fontFamily: theme.fonts.sansBold },
 });

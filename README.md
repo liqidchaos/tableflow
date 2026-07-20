@@ -2,7 +2,7 @@
 
 Modern hospitality infrastructure: guest ordering, kitchen display, operator dashboard, and server tools.
 
-**Stack:** Next.js 14 · Expo SDK 51 (React Native) · Supabase · TypeScript · Stripe Connect
+**Stack:** Next.js 14 · Expo SDK 54 (React Native) · Supabase · TypeScript · Stripe Connect
 
 ---
 
@@ -11,7 +11,7 @@ Modern hospitality infrastructure: guest ordering, kitchen display, operator das
 - Node.js 20+
 - npm 10+
 - [Supabase CLI](https://supabase.com/docs/guides/cli) (optional, for local DB)
-- [Expo Go](https://expo.dev/go) app on your phone (SDK 51 — install from the App Store / Play Store; no custom dev build required)
+- [Expo Go](https://expo.dev/go) app on your phone (SDK 54 — install from the App Store / Play Store; no custom dev build required)
 
 ---
 
@@ -83,7 +83,7 @@ npm run dev
 # Web only
 cd apps/web && npm run dev
 
-# Mobile only (Expo SDK 51 — compatible with standard Expo Go)
+# Mobile only (Expo SDK 54 — compatible with standard Expo Go)
 cd apps/mobile && npx expo start --clear
 ```
 
@@ -112,7 +112,7 @@ Full timed checklist: [`docs/operator-setup-checklist.md`](docs/operator-setup-c
 
 ### Guest order (mobile — Expo Go)
 
-The mobile app targets **Expo SDK 51** so it runs in the standard Expo Go app from the App Store / Play Store (no development build required).
+The mobile app targets **Expo SDK 54** so it runs in the standard Expo Go app from the App Store / Play Store (no development build required).
 
 1. Stop any running Metro/Expo process, then: `cd apps/mobile && npx expo start --clear`
 2. Scan the QR code with the **Expo Go** app (Camera on iOS, Expo Go on Android)
@@ -183,7 +183,7 @@ To enable payments:
 tableflow/
 ├── apps/
 │   ├── web/          # Next.js — dashboard, KDS, guest web, API routes
-│   └── mobile/       # Expo SDK 51 — guest + server apps (Expo Go)
+│   └── mobile/       # Expo SDK 54 — guest + server apps (Expo Go)
 ├── packages/
 │   ├── db/           # Supabase clients, JWT, QR, realtime helpers
 │   ├── types/        # Shared types + Zod schemas
@@ -223,7 +223,7 @@ Everything else — ordering, KDS, floor view, requests, push notifications, AI 
 
 ## Mobile production builds (EAS)
 
-The app runs in **Expo Go** (SDK 51) for development. For App Store / Play Store builds, use EAS:
+The app runs in **Expo Go** (SDK 54) for development. For App Store / Play Store builds, use EAS:
 
 ```bash
 cd apps/mobile
