@@ -3,6 +3,7 @@ import { TableFlowError } from '@tableflow/types';
 import {
   assertAmountCoversOrderSubtotal,
   assertSessionId,
+  assertTabModeAllowsSessionClearance,
 } from './session-binding';
 import type { SessionTokenPayload } from '@tableflow/db';
 
@@ -35,5 +36,23 @@ describe('session binding (BOLA regression)', () => {
 
   it('rejects amount more than 1¢ under', () => {
     expect(() => assertAmountCoversOrderSubtotal(12.5, 1248)).toThrow(TableFlowError);
+  });
+});
+
+describe('session clearance tab_mode gate (TAB-65)', () => {
+  it('rejects pay_per_order (pay-before-kitchen invariant)', () => {
+    expect(() => assertTabModeAllowsSessionClearance('pay_per_order')).toThrow(TableFlowError);
+    expect(() => assertTabModeAllowsSessionClearance(null)).toThrow(TableFlowError);
+    expect(() => assertTabModeAllowsSessionClearance(undefined)).toThrow(TableFlowError);
+  });
+
+  it('allows preauth and bar_tab', () => {
+    expect(() => assertTabModeAllowsSessionClearance('preauth')).not.toThrow();
+    expect(() => assertTabModeAllowsSessionClearance('bar_tab')).not.toThrow();
+  });
+
+  it('rejects under-authorization against pending session liability', () => {
+    expect(() => assertAmountCoversOrderSubtotal(42.0, 100)).toThrow(TableFlowError);
+    expect(() => assertAmountCoversOrderSubtotal(42.0, 4200)).not.toThrow();
   });
 });

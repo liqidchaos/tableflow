@@ -13,7 +13,13 @@ import { calcPlatformFeeCents } from '@/lib/platform-fee';
 import { checkRateLimit, rateLimitKey } from '@/lib/rate-limit';
 import { withIdempotency } from '@/lib/idempotency';
 import { enqueueSessionPendingOrders } from '@/lib/kitchen-enqueue';
-import { assertGuestOnSession, assertSessionId } from '@/lib/session-binding';
+import {
+  assertAmountCoversOrderSubtotal,
+  assertGuestOnSession,
+  assertSessionId,
+  assertTabModeAllowsSessionClearance,
+  getPendingPaymentSubtotalDollars,
+} from '@/lib/session-binding';
 import {
   canApplyConnectApplicationFee,
   stripeAccountOptions,
@@ -32,6 +38,20 @@ export async function POST(req: NextRequest) {
 
       assertSessionId(sessionAuth, body.session_id);
       await assertGuestOnSession(supabase, body.guest_id, body.session_id);
+
+      const { data: session } = await supabase
+        .from('table_sessions')
+        .select('tab_mode')
+        .eq('id', sessionAuth.session_id)
+        .single();
+      assertTabModeAllowsSessionClearance(session?.tab_mode);
+
+      // Complete mediation: hold must cover existing pending_payment liability (TAB-65).
+      const pendingSubtotal = await getPendingPaymentSubtotalDollars(
+        supabase,
+        sessionAuth.session_id
+      );
+      assertAmountCoversOrderSubtotal(pendingSubtotal, body.amount);
 
       const { data: venue } = await supabase
         .from('venues')

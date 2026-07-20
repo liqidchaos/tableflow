@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
+  enqueueSessionPendingOrders,
   isKdsVisibleStatus,
   isPaymentClearedForKitchen,
   shouldEnqueueOnOrderCreate,
@@ -65,5 +66,140 @@ describe('pay-before-fire gate', () => {
     expect(shouldEnqueueSessionPendingOnPayment('pay_per_order')).toBe(false);
     expect(shouldEnqueueSessionPendingOnPayment('preauth')).toBe(true);
     expect(shouldEnqueueSessionPendingOnPayment('bar_tab')).toBe(true);
+  });
+});
+
+describe('enqueueSessionPendingOrders (TAB-42)', () => {
+  function createSupabaseMock(
+    sessionId: string,
+    pending: { id: string }[],
+    failed: { order_id: string }[]
+  ) {
+    const orders: Array<{
+      id: string;
+      session_id: string;
+      status: 'pending_payment' | 'received';
+    }> = pending.map((order) => ({
+      id: order.id,
+      session_id: sessionId,
+      status: 'pending_payment',
+    }));
+    const orderStatus = new Map<string, 'pending_payment' | 'received'>();
+    orders.forEach((order) => orderStatus.set(order.id, 'pending_payment'));
+
+    function createOrdersQuery() {
+      let selectFields = '';
+      const filters: Array<{ field: string; value: unknown }> = [];
+      let isUpdate = false;
+
+      const buildResult = () => {
+        if (selectFields === 'id') {
+          const sessionFilter = filters.find((f) => f.field === 'session_id')?.value;
+          const statusFilter = filters.find((f) => f.field === 'status')?.value;
+          return {
+            data: orders
+              .filter(
+                (order) =>
+                  (!sessionFilter || order.session_id === sessionFilter) &&
+                  (!statusFilter || order.status === statusFilter)
+              )
+              .map((order) => ({ id: order.id })),
+          };
+        }
+
+        if (selectFields === 'id, status') {
+          const idFilter = filters.find((f) => f.field === 'id')?.value;
+          if (!idFilter) {
+            return { data: null };
+          }
+          const status = orderStatus.get(idFilter as string);
+          return { data: status ? { id: idFilter, status } : null };
+        }
+
+        return { data: null };
+      };
+
+      return {
+        select(fields: string) {
+          selectFields = fields;
+          return this;
+        },
+        eq(field: string, value: unknown) {
+          filters.push({ field, value });
+          return this;
+        },
+        in() {
+          return this;
+        },
+        update() {
+          isUpdate = true;
+          return this;
+        },
+        async single() {
+          return buildResult();
+        },
+        async maybeSingle() {
+          if (isUpdate) {
+            const idFilter = filters.find((f) => f.field === 'id');
+            const statusFilter = filters.find((f) => f.field === 'status');
+            if (!idFilter) return { data: null };
+            const currentStatus = orderStatus.get(idFilter.value as string);
+            if (!currentStatus) return { data: null };
+            if (statusFilter && statusFilter.value !== currentStatus) {
+              return { data: null };
+            }
+            orderStatus.set(idFilter.value as string, 'received');
+            const entry = orders.find((order) => order.id === idFilter.value);
+            if (entry) {
+              entry.status = 'received';
+            }
+            return { data: { id: idFilter.value } };
+          }
+          return buildResult();
+        },
+        async then(resolve: (value: { data: any }) => unknown) {
+          return resolve(buildResult());
+        },
+      };
+    }
+
+    return {
+      from(table: string) {
+        if (table === 'orders') {
+          return createOrdersQuery();
+        }
+        if (table === 'payments') {
+          return {
+            select() {
+              return this;
+            },
+            eq() {
+              return this;
+            },
+            in() {
+              return this;
+            },
+            async then(resolve: (value: { data: { order_id: string }[] }) => unknown) {
+              return resolve({ data: failed });
+            },
+          };
+        }
+        throw new Error(`unexpected table ${table}`);
+      },
+    };
+  }
+
+  it('skips orders that already have failed payments', async () => {
+    const supabase = createSupabaseMock(
+      'session-1',
+      [
+        { id: 'order-failed' },
+        { id: 'order-ok' },
+      ],
+      [{ order_id: 'order-failed' }]
+    );
+
+    const result = await enqueueSessionPendingOrders(supabase as never, 'session-1');
+    expect(result).toEqual(['order-ok']);
   });
 });

@@ -4,9 +4,14 @@ import { getSupabase, parseBody, withHandler, requireStripe, getSessionAuth, aud
 import { throwError } from '@tableflow/types';
 import { calcPlatformFeeCents } from '@/lib/platform-fee';
 import { checkRateLimit, rateLimitKey } from '@/lib/rate-limit';
-import { enqueueSessionPendingOrders } from '@/lib/kitchen-enqueue';
+import { enqueueSessionPendingOrders, shouldEnqueueSessionPendingOnPayment } from '@/lib/kitchen-enqueue';
+import {
+  assertAmountCoversOrderSubtotal,
+  getPendingPaymentSubtotalDollars,
+} from '@/lib/session-binding';
 import { canApplyConnectApplicationFee, stripeAccountOptions } from '@/lib/stripe-venue';
 import { calculateOrderTax, TAX_CALCULATION_METADATA_KEY } from '@/lib/stripe-tax';
+import type { TabMode } from '@tableflow/types';
 
 export async function POST(req: NextRequest) {
   return withHandler(async () => {
@@ -29,6 +34,19 @@ export async function POST(req: NextRequest) {
 
     if (payment.venue_id !== sessionAuth.venue_id || payment.session_id !== sessionAuth.session_id) {
       throwError('FORBIDDEN', 'Payment does not belong to this session');
+    }
+
+    const { data: session } = await supabase
+      .from('table_sessions')
+      .select('tab_mode')
+      .eq('id', payment.session_id)
+      .single();
+    const tabMode = (session?.tab_mode ?? 'pay_per_order') as TabMode;
+
+    // Capture may settle an open tab; never promote pending tickets on pay_per_order.
+    if (shouldEnqueueSessionPendingOnPayment(tabMode)) {
+      const pendingSubtotal = await getPendingPaymentSubtotalDollars(supabase, payment.session_id);
+      assertAmountCoversOrderSubtotal(pendingSubtotal, body.final_amount);
     }
 
     const venue = payment.venues as unknown as {
@@ -73,12 +91,14 @@ export async function POST(req: NextRequest) {
     if (error) failDb(error);
     await auditLog(payment.venue_id, null, 'payment.captured', 'payment', payment.id);
 
-    // Capture also clears any lingering pending tickets on the session.
-    const enqueued = await enqueueSessionPendingOrders(supabase, payment.session_id);
-    for (const orderId of enqueued) {
-      await auditLog(payment.venue_id, null, 'kitchen.enqueued', 'order', orderId, {
-        reason: 'payments.capture',
-      });
+    // Capture clears lingering pending tickets only for preauth / bar_tab (TAB-65).
+    if (shouldEnqueueSessionPendingOnPayment(tabMode)) {
+      const enqueued = await enqueueSessionPendingOrders(supabase, payment.session_id);
+      for (const orderId of enqueued) {
+        await auditLog(payment.venue_id, null, 'kitchen.enqueued', 'order', orderId, {
+          reason: 'payments.capture',
+        });
+      }
     }
 
     return Response.json({

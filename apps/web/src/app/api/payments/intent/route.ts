@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import { CreatePaymentIntentSchema } from '@tableflow/types';
+import { CreatePaymentIntentSchema, throwError } from '@tableflow/types';
 import {
   getSupabase,
   parseBody,
@@ -17,6 +17,8 @@ import {
   assertGuestOnSession,
   assertOrderBelongsToSession,
   assertSessionId,
+  assertTabModeAllowsSessionClearance,
+  getPendingPaymentSubtotalDollars,
 } from '@/lib/session-binding';
 import {
   canApplyConnectApplicationFee,
@@ -37,9 +39,25 @@ export async function POST(req: NextRequest) {
       assertSessionId(sessionAuth, body.session_id);
       await assertGuestOnSession(supabase, body.guest_id, body.session_id);
 
-      if (body.order_id) {
+      if (body.mode === 'preauth') {
+        const { data: session } = await supabase
+          .from('table_sessions')
+          .select('tab_mode')
+          .eq('id', sessionAuth.session_id)
+          .single();
+        assertTabModeAllowsSessionClearance(session?.tab_mode);
+        const pendingSubtotal = await getPendingPaymentSubtotalDollars(
+          supabase,
+          sessionAuth.session_id
+        );
+        assertAmountCoversOrderSubtotal(pendingSubtotal, body.amount);
+      } else if (body.order_id) {
         const order = await assertOrderBelongsToSession(supabase, body.order_id, sessionAuth);
         assertAmountCoversOrderSubtotal(order.subtotal, body.amount);
+      } else {
+        // pay_order without order_id: no kitchen clearance path, but refuse unbound amounts
+        // so clients cannot mint arbitrary PaymentIntents against the venue Connect account.
+        throwError('VALIDATION_ERROR', 'order_id is required for pay_order mode');
       }
 
       const { data: venue } = await supabase

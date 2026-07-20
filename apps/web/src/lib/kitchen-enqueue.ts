@@ -120,8 +120,35 @@ export async function enqueueSessionPendingOrders(
     .eq('session_id', sessionId)
     .eq('status', 'pending_payment');
 
+  const pendingOrders = pending ?? [];
+  if (pendingOrders.length === 0) {
+    return [];
+  }
+
+  const pendingIds = pendingOrders.map((row) => row.id);
+  const failedOrderIds = new Set<string>();
+
+  if (pendingIds.length > 0) {
+    const { data: failedPayments } = await supabase
+      .from('payments')
+      .select('order_id')
+      .eq('session_id', sessionId)
+      .in('order_id', pendingIds)
+      .eq('status', 'failed');
+
+    for (const payment of failedPayments ?? []) {
+      if (payment.order_id) {
+        failedOrderIds.add(payment.order_id);
+      }
+    }
+  }
+
   const enqueued: string[] = [];
-  for (const row of pending ?? []) {
+  for (const row of pendingOrders) {
+    if (failedOrderIds.has(row.id)) {
+      continue;
+    }
+
     const result = await enqueueOrderToKitchen(supabase, row.id, opts);
     if (result.enqueued) enqueued.push(row.id);
   }
