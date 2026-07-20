@@ -1,6 +1,8 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 import type { SessionTokenPayload } from '@tableflow/db';
+import type { TabMode } from '@tableflow/types';
 import { throwError } from '@tableflow/types';
+import { shouldEnqueueSessionPendingOnPayment } from './kitchen-enqueue';
 
 /** Complete mediation: body/path session must match the guest JWT. */
 export function assertSessionId(
@@ -11,6 +13,32 @@ export function assertSessionId(
   if (auth.session_id !== sessionId) {
     throwError('FORBIDDEN', message);
   }
+}
+
+/**
+ * Session-wide kitchen clearance (authorize / preauth intent / capture promote) is only
+ * valid for preauth and bar_tab. pay_per_order must never use this path — otherwise a
+ * guest can authorize $0.01 and fire every pending ticket (pay-before-kitchen break).
+ */
+export function assertTabModeAllowsSessionClearance(tabMode: TabMode | string | null | undefined): void {
+  const mode = (tabMode ?? 'pay_per_order') as TabMode;
+  if (!shouldEnqueueSessionPendingOnPayment(mode)) {
+    throwError('FORBIDDEN', 'Session payment clearance is not available for this tab mode');
+  }
+}
+
+/** Sum of pending_payment order subtotals (dollars) for session-liability mediation. */
+export async function getPendingPaymentSubtotalDollars(
+  supabase: SupabaseClient,
+  sessionId: string
+): Promise<number> {
+  const { data } = await supabase
+    .from('orders')
+    .select('subtotal')
+    .eq('session_id', sessionId)
+    .eq('status', 'pending_payment');
+
+  return (data ?? []).reduce((sum, row) => sum + Number(row.subtotal ?? 0), 0);
 }
 
 /**
