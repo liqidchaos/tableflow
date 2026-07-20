@@ -11,7 +11,7 @@ export async function GET(req: NextRequest, { params }: { params: { venue_id: st
 
     const { data, error } = await supabase
       .from('venues')
-      .select('id, name, slug, owner_id, brand_color, tab_mode, qr_mode, nfc_enabled, currency, stripe_account_id, stripe_onboarded, plan, trial_ends_at, subscription_status, stripe_customer_id, address, city, timezone, created_at')
+      .select('id, name, slug, owner_id, brand_color, tab_mode, qr_mode, nfc_enabled, currency, stripe_account_id, stripe_onboarded, plan, trial_ends_at, subscription_status, stripe_customer_id, address, city, state, postal_code, country, tax_enabled, timezone, created_at')
       .eq('id', params.venue_id)
       .single();
 

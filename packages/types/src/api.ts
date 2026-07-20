@@ -47,6 +47,10 @@ export const UpdateVenueSchema = z.object({
   brand_color: z.string().optional(),
   address: z.string().optional(),
   city: z.string().optional(),
+  state: z.string().optional(),
+  postal_code: z.string().optional(),
+  country: z.string().optional(),
+  tax_enabled: z.boolean().optional(),
   timezone: z.string().optional(),
 });
 
@@ -205,6 +209,16 @@ export const CreatePaymentIntentSchema = z.object({
   amount: z.number().int().positive(),
   tip_amount: z.number().int().min(0).default(0),
   mode: z.enum(['pay_order', 'preauth']).default('pay_order'),
+});
+
+export const CreateVenueInvoiceSchema = z.object({
+  description: z.string().min(1).max(500),
+  amount: z.number().int().positive(),
+  currency: z.string().default('usd'),
+  // send_invoice only until charge_automatically has explicit dual-control — auto-debit can
+  // charge a venue's default payment method without interactive consent.
+  collection_method: z.literal('send_invoice').default('send_invoice'),
+  days_until_due: z.number().int().positive().max(365).optional(),
 });
 
 export type RegisterInput = z.infer<typeof RegisterSchema>;

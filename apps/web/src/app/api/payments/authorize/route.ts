@@ -19,6 +19,7 @@ import {
   stripeAccountOptions,
   venuePaymentsEnabled,
 } from '@/lib/stripe-venue';
+import { calculateOrderTax, TAX_CALCULATION_METADATA_KEY } from '@/lib/stripe-tax';
 
 export async function POST(req: NextRequest) {
   return withHandler(async () => {
@@ -34,7 +35,9 @@ export async function POST(req: NextRequest) {
 
       const { data: venue } = await supabase
         .from('venues')
-        .select('stripe_account_id, stripe_onboarded, service_fee_pct')
+        .select(
+          'stripe_account_id, stripe_onboarded, service_fee_pct, tax_enabled, address, city, state, postal_code, country'
+        )
         .eq('id', sessionAuth.venue_id)
         .single();
 
@@ -52,9 +55,14 @@ export async function POST(req: NextRequest) {
         ? calcPlatformFeeCents(body.amount, Number(venue.service_fee_pct))
         : 0;
 
+      // `body.amount` is the estimated tab subtotal; hold the tax-inclusive total so the eventual
+      // capture (which recomputes tax against the final settled amount) doesn't exceed this hold.
+      const taxResult = await calculateOrderTax(stripe, venue, body.amount, sessionAuth.session_id);
+      const holdAmount = taxResult?.amountTotal ?? body.amount;
+
       const paymentIntent = await stripe.paymentIntents.create(
         {
-          amount: body.amount,
+          amount: holdAmount,
           currency: 'usd',
           payment_method: body.payment_method_id,
           capture_method: 'manual',
@@ -64,6 +72,7 @@ export async function POST(req: NextRequest) {
             session_id: sessionAuth.session_id,
             guest_id: body.guest_id,
             venue_id: sessionAuth.venue_id,
+            ...(taxResult ? { [TAX_CALCULATION_METADATA_KEY]: taxResult.calculationId } : {}),
           },
         },
         stripeAccountOptions(venue)
@@ -77,8 +86,10 @@ export async function POST(req: NextRequest) {
         session_id: sessionAuth.session_id,
         guest_id: body.guest_id,
         stripe_payment_intent: paymentIntent.id,
-        amount: body.amount / 100,
+        amount: holdAmount / 100,
         platform_fee: platformFee / 100,
+        tax_amount: (taxResult?.taxAmount ?? 0) / 100,
+        stripe_tax_calculation_id: taxResult?.calculationId ?? null,
         status: authorized ? 'authorized' : 'pending',
       }).select('id').single();
 
@@ -97,7 +108,8 @@ export async function POST(req: NextRequest) {
       return Response.json({
         payment_intent_id: paymentIntent.id,
         status: paymentIntent.status,
-        amount_authorized: body.amount,
+        amount_authorized: holdAmount,
+        tax_amount: taxResult?.taxAmount ?? 0,
       });
     });
   });

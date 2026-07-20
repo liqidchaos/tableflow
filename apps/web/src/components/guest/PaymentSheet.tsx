@@ -4,6 +4,8 @@ import { useEffect, useState, useMemo } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { Button, Sheet } from '@tableflow/ui';
+import { guestPaymentTotals } from '@/lib/guest-payment-totals';
+import { submitPaymentElement } from '@/lib/stripe-elements';
 
 const TIP_OPTIONS = [
   { label: '15%', value: 0.15 },
@@ -57,6 +59,8 @@ export function PaymentSheet({
   const [intentType, setIntentType] = useState<'setup' | 'payment' | null>(null);
   const [paid, setPaid] = useState(false);
   const [tipLocked, setTipLocked] = useState(false);
+  const [taxAmountCents, setTaxAmountCents] = useState(0);
+  const [chargedAmountCents, setChargedAmountCents] = useState<number | null>(null);
 
   const publishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
   const stripeConfigured = Boolean(publishableKey);
@@ -169,6 +173,10 @@ export function PaymentSheet({
       }
 
       setTipLocked(true);
+      setTaxAmountCents(Number(data.tax_amount ?? 0));
+      setChargedAmountCents(
+        typeof data.amount === 'number' && data.amount > 0 ? data.amount : null
+      );
       setClientSecret(data.client_secret);
       setStripeAccountId(data.stripe_account_id);
       setIntentType('payment');
@@ -245,12 +253,14 @@ export function PaymentSheet({
 
   const showElements = Boolean(clientSecret && stripePromise && (mode === 'setup' || mode === 'pay_order'));
   const tip = effectiveTipPercent();
-  const payPreview =
-    mode === 'pay_order'
-      ? orderTotal + orderTotal * tip
-      : mode === 'close'
-        ? tabTotal + tabTotal * tip
-        : 0;
+  const payBase = mode === 'pay_order' ? orderTotal : mode === 'close' ? tabTotal : 0;
+  const totals = guestPaymentTotals({
+    subtotalDollars: payBase,
+    tipFraction: tip,
+    taxAmountCents: tipLocked ? taxAmountCents : null,
+    chargedAmountCents: tipLocked ? chargedAmountCents : null,
+  });
+  const payPreview = totals.totalDollars;
 
   const stripeAppearance = {
     theme: 'night' as const,
@@ -301,9 +311,17 @@ export function PaymentSheet({
           <p className="m-0 text-sm text-luxury-on-surface-variant">Order total</p>
           <p className="m-0 mt-1 font-serif text-3xl font-light text-gold">${orderTotal.toFixed(2)}</p>
           {tipLocked && (
-            <p className="m-0 mt-2 text-sm text-luxury-on-surface-variant">
-              With tip: ${payPreview.toFixed(2)}
-            </p>
+            <div className="mt-3 space-y-1 text-sm text-luxury-on-surface-variant">
+              {totals.hasTax && (
+                <p className="m-0">Tax: ${totals.taxDollars.toFixed(2)}</p>
+              )}
+              <p className="m-0">
+                Tip ({Math.round(tip * 100)}%): ${totals.tipDollars.toFixed(2)}
+              </p>
+              <p className="m-0 font-medium text-luxury-on-surface">
+                Total due: ${payPreview.toFixed(2)}
+              </p>
+            </div>
           )}
         </div>
       )}
@@ -361,7 +379,8 @@ export function PaymentSheet({
 
           {tipLocked && mode === 'pay_order' && (
             <p className="mb-4 text-sm text-luxury-on-surface-variant">
-              Tip locked at {Math.round(tip * 100)}% · ${payPreview.toFixed(2)} total
+              Tip locked at {Math.round(tip * 100)}%
+              {totals.hasTax ? ' · tax included' : ''} · ${payPreview.toFixed(2)} total
             </p>
           )}
 
@@ -478,9 +497,7 @@ function StripeConfirm({
     setSubmitting(true);
     setError('');
     try {
-      // Stripe Payment Element requires submit() before confirmPayment/confirmSetup.
-      const { error: submitError } = await elements.submit();
-      if (submitError) throw new Error(submitError.message);
+      await submitPaymentElement(elements);
 
       if (intentType === 'setup') {
         const result = await stripe.confirmSetup({
