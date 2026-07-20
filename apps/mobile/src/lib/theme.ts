@@ -26,8 +26,15 @@ export const theme = {
       onSurfaceVariant: '#d0c5af',
       outlineVariant: '#4d4635',
     },
+    // Top-level luxury aliases used by PaymentScreen (tax-inclusive pay UI)
+    bg: '#131313',
+    surfaceLow: '#1c1b1b',
+    onSurface: '#e5e2e1',
+    onSurfaceVariant: '#d0c5af',
+    outlineVariant: '#4d4635',
     gold: '#f2ca50',
     goldContainer: '#d4af37',
+    goldOn: '#241a00',
   },
   fonts: {
     display: 'SpaceGrotesk_600SemiBold',
