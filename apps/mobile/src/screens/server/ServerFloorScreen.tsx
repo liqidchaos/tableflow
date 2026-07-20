@@ -1,7 +1,8 @@
 import { useEffect, useState, useCallback } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { createAnonClient, subscribeWithBackoff } from '@tableflow/db';
+import { createAnonClient } from '@tableflow/db/clients';
+import { subscribeWithBackoff } from '@tableflow/db/realtime';
 import { apiFetch } from '../../lib/api';
 import { registerForPushNotifications } from '../../utils/notifications';
 import { getStaffCredentials } from './ServerLoginScreen';
@@ -12,11 +13,11 @@ import type { RootStackParamList } from '../../navigation/types';
 type Props = NativeStackScreenProps<RootStackParamList, 'ServerFloor'>;
 
 const STATUS_COLORS: Record<FloorTable['status'], string> = {
-  empty: '#E8E6E1',
-  ordering: '#EAB308',
-  eating: '#22C55E',
-  paying: '#F59E0B',
-  needs_attention: '#EF4444',
+  empty: theme.colors.outlineVariant,
+  ordering: theme.colors.sun,
+  eating: theme.colors.citrus,
+  paying: theme.colors.gold,
+  needs_attention: theme.colors.error,
 };
 
 const POLL_INTERVAL_MS = 30_000;
@@ -96,7 +97,7 @@ export function ServerFloorScreen({ navigation }: Props) {
     };
   }, [venueId, loadFloor]);
 
-  if (loading) return <ActivityIndicator style={{ flex: 1 }} color={theme.colors.flow} />;
+  if (loading) return <ActivityIndicator style={{ flex: 1, backgroundColor: theme.colors.bg }} color={theme.colors.gold} />;
 
   return (
     <View style={styles.container}>
@@ -131,19 +132,27 @@ export function ServerFloorScreen({ navigation }: Props) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: theme.colors.luxury.bg },
-  header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 20, paddingBottom: 0 },
-  title: { fontSize: 28, fontFamily: theme.fonts.display, color: theme.colors.luxury.onSurface },
-  requestsLink: { color: theme.colors.gold, fontFamily: theme.fonts.sansBold },
+  container: { flex: 1, backgroundColor: theme.colors.bg },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 20,
+    paddingBottom: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: theme.colors.outlineVariant,
+  },
+  title: { fontSize: 26, fontFamily: theme.fonts.serif, color: theme.colors.onSurface },
+  requestsLink: { color: theme.colors.gold, fontFamily: theme.fonts.sansBold, fontSize: 13, letterSpacing: 0.5, textTransform: 'uppercase' },
   tableCard: {
     flex: 1,
     margin: 8,
-    backgroundColor: theme.colors.luxury.surfaceLow,
-    borderRadius: 4,
+    backgroundColor: theme.colors.surfaceLow,
+    borderRadius: theme.radii.md,
     padding: 16,
     borderWidth: 1,
   },
-  tableName: { fontSize: 18, fontFamily: theme.fonts.sansBold, color: theme.colors.luxury.onSurface },
-  tableStatus: { color: theme.colors.luxury.onSurfaceVariant, marginTop: 4, textTransform: 'capitalize', fontFamily: theme.fonts.sans },
+  tableName: { fontSize: 18, fontFamily: theme.fonts.sansBold, color: theme.colors.onSurface },
+  tableStatus: { color: theme.colors.onSurfaceVariant, marginTop: 4, textTransform: 'capitalize', fontFamily: theme.fonts.sans },
   alert: { color: theme.colors.error, fontFamily: theme.fonts.sansBold, marginTop: 8 },
 });

@@ -14,6 +14,7 @@ import type { MenuItemWithModifiers, MenuModifierWithOptions } from '@tableflow/
 import type { RootStackParamList } from '../navigation/types';
 import { useCart } from '../context/CartContext';
 import { unitPrice } from '../utils/cart';
+import { theme } from '../lib/theme';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ItemDetail'>;
 
@@ -93,6 +94,7 @@ export function ItemDetailScreen({ route, navigation }: Props) {
       modifierPriceDeltas,
       special_instructions: instructions || undefined,
       course: 'main',
+      image_url: item.image_url ?? undefined,
     });
     navigation.goBack();
   }
@@ -165,52 +167,53 @@ export function ItemDetailScreen({ route, navigation }: Props) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#FAFAF8', padding: 20 },
-  heroImage: { width: '100%', height: 200, borderRadius: 16, marginBottom: 16, marginHorizontal: -20, maxWidth: undefined },
-  name: { fontSize: 28, fontFamily: 'Fraunces_600SemiBold', color: '#0F0F0F' },
-  price: { fontSize: 22, fontFamily: 'Inter_600SemiBold', marginVertical: 8 },
-  description: { color: '#6B7280', lineHeight: 22, marginBottom: 16, fontFamily: 'Inter_400Regular' },
-  allergens: { color: '#D97706', fontSize: 13, marginBottom: 16, fontFamily: 'Inter_400Regular' },
+  container: { flex: 1, backgroundColor: theme.colors.bg, padding: 20 },
+  heroImage: { width: '100%', height: 220, borderRadius: theme.radii.lg, marginBottom: 16, marginHorizontal: -20, maxWidth: undefined },
+  name: { fontSize: 28, fontFamily: theme.fonts.serif, color: theme.colors.onSurface },
+  price: { fontSize: 20, fontFamily: theme.fonts.sansBold, color: theme.colors.gold, marginVertical: 8 },
+  description: { color: theme.colors.onSurfaceVariant, lineHeight: 22, marginBottom: 16, fontFamily: theme.fonts.sans },
+  allergens: { color: theme.colors.sun, fontSize: 13, marginBottom: 16, fontFamily: theme.fonts.sans },
   modifierGroup: { marginBottom: 20 },
-  modifierTitle: { fontSize: 16, fontFamily: 'Inter_600SemiBold', marginBottom: 4 },
-  modifierHint: { fontSize: 12, color: '#6B7280', marginBottom: 8, fontFamily: 'Inter_400Regular' },
+  modifierTitle: { fontSize: 16, fontFamily: theme.fonts.sansBold, marginBottom: 4, color: theme.colors.onSurface },
+  modifierHint: { fontSize: 12, color: theme.colors.onSurfaceVariant, marginBottom: 8, fontFamily: theme.fonts.sans },
   optionRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: '#FFF',
-    borderWidth: 1.5,
-    borderColor: '#E8E6E1',
-    borderRadius: 10,
+    backgroundColor: theme.colors.surfaceLow,
+    borderWidth: 1,
+    borderColor: theme.colors.outlineVariant,
+    borderRadius: theme.radii.md,
     padding: 14,
     marginBottom: 8,
   },
-  optionRowActive: { borderColor: '#E84B2C', backgroundColor: '#FFF0ED' },
-  optionName: { fontFamily: 'Inter_400Regular', fontSize: 15, flex: 1 },
-  optionNameActive: { fontFamily: 'Inter_600SemiBold', color: '#E84B2C' },
-  optionPrice: { fontFamily: 'Inter_600SemiBold', color: '#6B7280' },
+  optionRowActive: { borderColor: theme.colors.gold, backgroundColor: theme.colors.goldGlow },
+  optionName: { fontFamily: theme.fonts.sans, fontSize: 15, flex: 1, color: theme.colors.onSurface },
+  optionNameActive: { fontFamily: theme.fonts.sansBold, color: theme.colors.gold },
+  optionPrice: { fontFamily: theme.fonts.sansBold, color: theme.colors.onSurfaceVariant },
   input: {
-    backgroundColor: '#FFF',
-    borderWidth: 1.5,
-    borderColor: '#E8E6E1',
-    borderRadius: 10,
+    backgroundColor: theme.colors.surfaceLow,
+    borderWidth: 1,
+    borderColor: theme.colors.outlineVariant,
+    borderRadius: theme.radii.md,
     padding: 14,
     marginBottom: 20,
-    fontFamily: 'Inter_400Regular',
+    color: theme.colors.onSurface,
+    fontFamily: theme.fonts.sans,
   },
   quantityRow: { flexDirection: 'row', alignItems: 'center', gap: 16, marginBottom: 24 },
   qtyBtn: {
     width: 44,
     height: 44,
-    borderRadius: 10,
-    backgroundColor: '#FFF',
-    borderWidth: 1.5,
-    borderColor: '#E8E6E1',
+    borderRadius: theme.radii.md,
+    backgroundColor: theme.colors.surfaceLow,
+    borderWidth: 1,
+    borderColor: theme.colors.outlineVariant,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  qtyText: { fontSize: 20, fontFamily: 'Inter_600SemiBold' },
-  qty: { fontSize: 20, fontFamily: 'Inter_600SemiBold', minWidth: 30, textAlign: 'center' },
-  addButton: { backgroundColor: '#E84B2C', padding: 16, borderRadius: 10, alignItems: 'center', marginBottom: 32 },
-  addButtonText: { color: '#FFF', fontFamily: 'Inter_600SemiBold', fontSize: 15 },
+  qtyText: { fontSize: 20, fontFamily: theme.fonts.sansBold, color: theme.colors.onSurface },
+  qty: { fontSize: 18, fontFamily: theme.fonts.sansBold, minWidth: 30, textAlign: 'center', color: theme.colors.onSurface },
+  addButton: { backgroundColor: theme.colors.gold, padding: 16, borderRadius: theme.radii.full, alignItems: 'center', marginBottom: 32 },
+  addButtonText: { color: theme.colors.goldOn, fontFamily: theme.fonts.sansBold, fontSize: 15, letterSpacing: 0.5 },
 });

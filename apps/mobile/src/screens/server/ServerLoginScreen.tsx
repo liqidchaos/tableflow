@@ -12,6 +12,7 @@ import {
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as SecureStore from 'expo-secure-store';
 import { apiFetch } from '../../lib/api';
+import { theme } from '../../lib/theme';
 import type { RootStackParamList } from '../../navigation/types';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ServerLogin'>;
@@ -70,6 +71,7 @@ export function ServerLoginScreen({ navigation }: Props) {
       <TextInput
         style={styles.input}
         placeholder="Email"
+        placeholderTextColor={theme.colors.onSurfaceVariant}
         value={email}
         onChangeText={setEmail}
         autoCapitalize="none"
@@ -78,13 +80,14 @@ export function ServerLoginScreen({ navigation }: Props) {
       <TextInput
         style={styles.input}
         placeholder="Password"
+        placeholderTextColor={theme.colors.onSurfaceVariant}
         value={password}
         onChangeText={setPassword}
         secureTextEntry
       />
       {error ? <Text style={styles.error}>{error}</Text> : null}
       {loading ? (
-        <ActivityIndicator color="#E84B2C" />
+        <ActivityIndicator color={theme.colors.gold} />
       ) : (
         <TouchableOpacity style={styles.button} onPress={handleLogin}>
           <Text style={styles.buttonText}>Sign In</Text>
@@ -98,20 +101,22 @@ export function ServerLoginScreen({ navigation }: Props) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#FAFAF8', padding: 24, justifyContent: 'center' },
-  title: { fontSize: 28, fontWeight: '600', marginBottom: 8 },
-  subtitle: { color: '#6B7280', marginBottom: 24 },
+  container: { flex: 1, backgroundColor: theme.colors.bg, padding: 24, justifyContent: 'center' },
+  title: { fontSize: 28, fontFamily: theme.fonts.serif, marginBottom: 8, color: theme.colors.onSurface },
+  subtitle: { color: theme.colors.onSurfaceVariant, marginBottom: 24, fontFamily: theme.fonts.sans },
   input: {
-    backgroundColor: '#FFF',
-    borderWidth: 1.5,
-    borderColor: '#E8E6E1',
-    borderRadius: 10,
+    backgroundColor: theme.colors.surfaceLow,
+    borderWidth: 1,
+    borderColor: theme.colors.outlineVariant,
+    borderRadius: theme.radii.md,
     padding: 14,
     marginBottom: 12,
     fontSize: 15,
+    color: theme.colors.onSurface,
+    fontFamily: theme.fonts.sans,
   },
-  button: { backgroundColor: '#E84B2C', padding: 16, borderRadius: 10, alignItems: 'center', marginTop: 8 },
-  buttonText: { color: '#FFF', fontWeight: '600' },
-  error: { color: '#DC2626', marginBottom: 12 },
-  link: { color: '#E84B2C', textAlign: 'center', marginTop: 24 },
+  button: { backgroundColor: theme.colors.gold, padding: 16, borderRadius: theme.radii.full, alignItems: 'center', marginTop: 8 },
+  buttonText: { color: theme.colors.goldOn, fontFamily: theme.fonts.sansBold, letterSpacing: 0.5 },
+  error: { color: theme.colors.error, marginBottom: 12, fontFamily: theme.fonts.sans },
+  link: { color: theme.colors.gold, textAlign: 'center', marginTop: 24, fontFamily: theme.fonts.sansBold },
 });

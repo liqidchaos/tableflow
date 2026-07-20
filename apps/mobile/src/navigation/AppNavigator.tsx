@@ -1,5 +1,6 @@
 import { useFonts, Inter_400Regular, Inter_600SemiBold } from '@expo-google-fonts/inter';
 import { SpaceGrotesk_600SemiBold } from '@expo-google-fonts/space-grotesk';
+import { PlayfairDisplay_400Regular, PlayfairDisplay_400Regular_Italic } from '@expo-google-fonts/playfair-display';
 import { ActivityIndicator, View, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -34,12 +35,14 @@ function RootNavigator() {
     Inter_400Regular,
     Inter_600SemiBold,
     SpaceGrotesk_600SemiBold,
+    PlayfairDisplay_400Regular,
+    PlayfairDisplay_400Regular_Italic,
   });
 
   if (!isReady || !fontsLoaded) {
     return (
       <View style={styles.boot}>
-        <ActivityIndicator color={theme.colors.flow} size="large" />
+        <ActivityIndicator color={theme.colors.gold} size="large" />
       </View>
     );
   }
@@ -49,9 +52,9 @@ function RootNavigator() {
       <Stack.Navigator
         initialRouteName={sessionId ? 'Menu' : 'Scan'}
         screenOptions={{
-          headerStyle: { backgroundColor: theme.colors.paper },
-          headerTintColor: theme.colors.ink,
-          headerTitleStyle: { fontFamily: theme.fonts.display, fontWeight: '600' },
+          headerStyle: { backgroundColor: theme.colors.bg },
+          headerTintColor: theme.colors.gold,
+          headerTitleStyle: { fontFamily: theme.fonts.display, color: theme.colors.onSurface, fontWeight: '600' },
         }}
       >
         <Stack.Screen name="Scan" component={ScanScreen} options={{ headerShown: false }} />
@@ -66,7 +69,7 @@ function RootNavigator() {
         <Stack.Screen name="ServerTable" component={ServerTableScreen} options={{ title: 'Table' }} />
         <Stack.Screen name="ServerRequests" component={ServerRequestsScreen} options={{ title: 'Requests' }} />
       </Stack.Navigator>
-      <StatusBar style="auto" />
+      <StatusBar style="light" />
     </NavigationContainer>
   );
 }
@@ -80,5 +83,5 @@ export function AppNavigator() {
 }
 
 const styles = StyleSheet.create({
-  boot: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: theme.colors.paper },
+  boot: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: theme.colors.bg },
 });

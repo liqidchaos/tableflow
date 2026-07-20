@@ -4,6 +4,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useStripe } from '@stripe/stripe-react-native';
 import { useSession } from '../context/SessionContext';
 import { apiFetch } from '../lib/api';
+import { theme } from '../lib/theme';
 import type { RootStackParamList } from '../navigation/types';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Payment'>;
@@ -52,7 +53,7 @@ function PaymentForm({
   const [paymentsDisabled, setPaymentsDisabled] = useState(false);
   const [tabTotal, setTabTotal] = useState(paramTabTotal);
 
-  const accent = brandColor ?? '#E84B2C';
+  const accent = brandColor ?? theme.colors.gold;
   const stripeReady = Boolean(initPaymentSheet && presentPaymentSheet && retrieveSetupIntent);
 
   useEffect(() => {
@@ -228,7 +229,7 @@ function PaymentForm({
       const paymentMethodId = setupResult.setupIntent?.paymentMethodId;
       if (!paymentMethodId) throw new Error('No payment method');
 
-      await apiFetch('/payments/charge', {
+      const charge = await apiFetch('/payments/charge', {
         method: 'POST',
         headers: { Authorization: `Bearer ${sessionToken}` },
         body: JSON.stringify({
@@ -241,7 +242,16 @@ function PaymentForm({
         }),
       });
 
-      Alert.alert('Payment complete', `Paid $${((subtotalCents + tipCents) / 100).toFixed(2)} including tip.`);
+      const chargedCents =
+        typeof charge.amount === 'number' && charge.amount > 0
+          ? charge.amount
+          : subtotalCents + tipCents;
+      const taxCents = typeof charge.tax_amount === 'number' ? charge.tax_amount : 0;
+      const taxNote = taxCents > 0 ? ` (includes $${(taxCents / 100).toFixed(2)} tax)` : '';
+      Alert.alert(
+        'Payment complete',
+        `Paid $${(chargedCents / 100).toFixed(2)} including tip${taxNote}.`
+      );
       navigation.navigate('OrderStatus', { orderId });
     } catch (err) {
       Alert.alert('Error', err instanceof Error ? err.message : 'Payment failed');
@@ -298,7 +308,7 @@ function PaymentForm({
             ]}
             onPress={() => handleTipSelect(opt.value)}
           >
-            <Text style={[styles.tipText, selectedTip === opt.value && !customTip && { color: '#FFF' }]}>
+            <Text style={[styles.tipText, selectedTip === opt.value && !customTip && { color: theme.colors.goldOn }]}>
               {opt.label}
             </Text>
           </TouchableOpacity>
@@ -363,36 +373,45 @@ export function PaymentScreen(props: Props) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#FAFAF8' },
+  container: { flex: 1, backgroundColor: theme.colors.bg },
   content: { padding: 24 },
-  title: { fontSize: 28, fontFamily: 'Fraunces_600SemiBold', marginBottom: 8 },
-  subtitle: { color: '#6B7280', marginBottom: 24, lineHeight: 22, fontFamily: 'Inter_400Regular' },
-  totalBox: { backgroundColor: '#FFF', borderRadius: 12, padding: 16, marginBottom: 24, alignItems: 'center' },
-  totalLabel: { color: '#6B7280', fontFamily: 'Inter_400Regular' },
-  totalAmount: { fontSize: 32, fontFamily: 'Inter_600SemiBold', marginTop: 4 },
-  sectionTitle: { fontSize: 16, fontFamily: 'Inter_600SemiBold', marginBottom: 12 },
+  title: { fontSize: 28, fontFamily: theme.fonts.serif, marginBottom: 8, color: theme.colors.onSurface },
+  subtitle: { color: theme.colors.onSurfaceVariant, marginBottom: 24, lineHeight: 22, fontFamily: theme.fonts.sans },
+  totalBox: {
+    backgroundColor: theme.colors.surfaceLow,
+    borderWidth: 1,
+    borderColor: theme.colors.outlineVariant,
+    borderRadius: theme.radii.lg,
+    padding: 16,
+    marginBottom: 24,
+    alignItems: 'center',
+  },
+  totalLabel: { color: theme.colors.onSurfaceVariant, fontFamily: theme.fonts.sans, fontSize: 12, letterSpacing: 1, textTransform: 'uppercase' },
+  totalAmount: { fontSize: 32, fontFamily: theme.fonts.serif, marginTop: 4, color: theme.colors.gold },
+  sectionTitle: { fontSize: 16, fontFamily: theme.fonts.sansBold, marginBottom: 12, color: theme.colors.onSurface },
   tipRow: { flexDirection: 'row', gap: 8, marginBottom: 12, flexWrap: 'wrap' },
   tipButton: {
     paddingHorizontal: 16,
     paddingVertical: 12,
-    borderRadius: 10,
-    borderWidth: 1.5,
-    borderColor: '#E8E6E1',
-    backgroundColor: '#FFF',
+    borderRadius: theme.radii.md,
+    borderWidth: 1,
+    borderColor: theme.colors.outlineVariant,
+    backgroundColor: theme.colors.surfaceLow,
   },
-  tipText: { fontFamily: 'Inter_600SemiBold', fontSize: 15 },
+  tipText: { fontFamily: theme.fonts.sansBold, fontSize: 15, color: theme.colors.onSurface },
   customTip: {
-    backgroundColor: '#FFF',
-    borderWidth: 1.5,
-    borderColor: '#E8E6E1',
-    borderRadius: 10,
+    backgroundColor: theme.colors.surfaceLow,
+    borderWidth: 1,
+    borderColor: theme.colors.outlineVariant,
+    borderRadius: theme.radii.md,
     padding: 14,
     marginBottom: 24,
-    fontFamily: 'Inter_400Regular',
+    color: theme.colors.onSurface,
+    fontFamily: theme.fonts.sans,
   },
-  button: { padding: 16, borderRadius: 10, alignItems: 'center' },
+  button: { padding: 16, borderRadius: theme.radii.full, alignItems: 'center' },
   buttonDisabled: { opacity: 0.7 },
-  buttonText: { color: '#FFF', fontFamily: 'Inter_600SemiBold', fontSize: 15 },
-  disabledBox: { backgroundColor: '#FEF3C7', padding: 16, borderRadius: 10 },
-  disabledText: { color: '#92400E', lineHeight: 20, fontFamily: 'Inter_400Regular' },
+  buttonText: { color: theme.colors.goldOn, fontFamily: theme.fonts.sansBold, fontSize: 15, letterSpacing: 0.5 },
+  disabledBox: { backgroundColor: theme.colors.surfaceLow, borderWidth: 1, borderColor: theme.colors.sun, padding: 16, borderRadius: theme.radii.md },
+  disabledText: { color: theme.colors.sun, lineHeight: 20, fontFamily: theme.fonts.sans },
 });

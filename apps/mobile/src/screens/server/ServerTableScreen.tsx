@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, ScrollView, ActivityIndicator
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { apiFetch } from '../../lib/api';
 import { getStaffCredentials } from './ServerLoginScreen';
+import { theme } from '../../lib/theme';
 import type { FloorTable, KDSTicket } from '@tableflow/types';
 import type { RootStackParamList } from '../../navigation/types';
 
@@ -43,7 +44,7 @@ export function ServerTableScreen({ route, navigation }: Props) {
 
       <Text style={styles.sectionTitle}>Order items</Text>
       {loading ? (
-        <ActivityIndicator color="#E84B2C" style={{ marginVertical: 16 }} />
+        <ActivityIndicator color={theme.colors.gold} style={{ marginVertical: 16 }} />
       ) : tickets.length === 0 ? (
         <Text style={styles.empty}>No active order items</Text>
       ) : (
@@ -82,18 +83,25 @@ export function ServerTableScreen({ route, navigation }: Props) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#FAFAF8', padding: 24 },
-  title: { fontSize: 28, fontFamily: 'Fraunces_600SemiBold' },
-  status: { color: '#6B7280', marginTop: 8, textTransform: 'capitalize', fontFamily: 'Inter_400Regular' },
-  detail: { marginTop: 12, fontSize: 15, fontFamily: 'Inter_400Regular' },
-  sectionTitle: { fontSize: 18, fontFamily: 'Inter_600SemiBold', marginTop: 24, marginBottom: 12 },
-  empty: { color: '#6B7280', fontFamily: 'Inter_400Regular' },
-  orderCard: { backgroundColor: '#FFF', borderRadius: 12, padding: 16, marginBottom: 12 },
-  orderHeader: { fontFamily: 'Inter_600SemiBold', marginBottom: 8, textTransform: 'capitalize' },
-  lineItem: { paddingVertical: 8, borderTopWidth: 1, borderTopColor: '#E8E6E1' },
-  lineName: { fontFamily: 'Inter_600SemiBold' },
-  lineMods: { color: '#6B7280', fontSize: 13, marginTop: 2, fontFamily: 'Inter_400Regular' },
-  lineNote: { color: '#D97706', fontSize: 13, marginTop: 2, fontStyle: 'italic', fontFamily: 'Inter_400Regular' },
-  requestBtn: { marginTop: 24, backgroundColor: '#EF4444', padding: 16, borderRadius: 10 },
-  requestText: { color: '#FFF', fontFamily: 'Inter_600SemiBold', textAlign: 'center' },
+  container: { flex: 1, backgroundColor: theme.colors.bg, padding: 24 },
+  title: { fontSize: 28, fontFamily: theme.fonts.serif, color: theme.colors.onSurface },
+  status: { color: theme.colors.onSurfaceVariant, marginTop: 8, textTransform: 'capitalize', fontFamily: theme.fonts.sans },
+  detail: { marginTop: 12, fontSize: 15, fontFamily: theme.fonts.sans, color: theme.colors.onSurface },
+  sectionTitle: { fontSize: 18, fontFamily: theme.fonts.sansBold, marginTop: 24, marginBottom: 12, color: theme.colors.onSurface },
+  empty: { color: theme.colors.onSurfaceVariant, fontFamily: theme.fonts.sans },
+  orderCard: {
+    backgroundColor: theme.colors.surfaceLow,
+    borderRadius: theme.radii.lg,
+    borderWidth: 1,
+    borderColor: theme.colors.outlineVariant,
+    padding: 16,
+    marginBottom: 12,
+  },
+  orderHeader: { fontFamily: theme.fonts.sansBold, marginBottom: 8, textTransform: 'capitalize', color: theme.colors.onSurface },
+  lineItem: { paddingVertical: 8, borderTopWidth: 1, borderTopColor: theme.colors.outlineVariant },
+  lineName: { fontFamily: theme.fonts.sansBold, color: theme.colors.onSurface },
+  lineMods: { color: theme.colors.onSurfaceVariant, fontSize: 13, marginTop: 2, fontFamily: theme.fonts.sans },
+  lineNote: { color: theme.colors.sun, fontSize: 13, marginTop: 2, fontStyle: 'italic', fontFamily: theme.fonts.sans },
+  requestBtn: { marginTop: 24, backgroundColor: theme.colors.errorContainer, padding: 16, borderRadius: theme.radii.md },
+  requestText: { color: theme.colors.onSurface, fontFamily: theme.fonts.sansBold, textAlign: 'center' },
 });

@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, Alert, Image } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { apiFetch } from '../lib/api';
 import { useSession } from '../context/SessionContext';
@@ -13,13 +13,13 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Cart'>;
 
 export function CartScreen({ navigation }: Props) {
   const { sessionId, sessionToken, guestId, venueId, brandColor, setActiveOrderId, tabMode } = useSession();
-  const { items, removeItem, clearCart, total, addItem } = useCart();
+  const { items, removeItem, clearCart, total, addItem, itemCount } = useCart();
   const [loading, setLoading] = useState(false);
   const [optimistic, setOptimistic] = useState(false);
   const [suggestions, setSuggestions] = useState<UpsellSuggestion[]>([]);
   const [loadingSuggestions, setLoadingSuggestions] = useState(false);
 
-  const accent = brandColor ?? theme.colors.flow;
+  const accent = brandColor ?? theme.colors.gold;
 
   const fetchUpsells = useCallback(async () => {
     if (!venueId || !sessionToken || items.length === 0) {
@@ -114,8 +114,14 @@ export function CartScreen({ navigation }: Props) {
         contentContainerStyle={{ padding: 16 }}
         ListEmptyComponent={<Text style={styles.empty}>Your cart is empty</Text>}
         ListHeaderComponent={
-          suggestions.length > 0 ? (
-            <View style={styles.suggestionsBox}>
+          <>
+            {items.length > 0 && (
+              <Text style={styles.cartCount}>
+                {itemCount} item{itemCount !== 1 ? 's' : ''} in your order
+              </Text>
+            )}
+            {suggestions.length > 0 && (
+              <View style={styles.suggestionsBox}>
               <Text style={styles.suggestionsTitle}>You might also like</Text>
               {loadingSuggestions ? (
                 <ActivityIndicator color={accent} size="small" />
@@ -132,11 +138,17 @@ export function CartScreen({ navigation }: Props) {
                   </TouchableOpacity>
                 ))
               )}
-            </View>
-          ) : null
+              </View>
+            )}
+          </>
         }
         renderItem={({ item }) => (
           <View style={styles.row}>
+            {item.image_url ? (
+              <Image source={{ uri: item.image_url }} style={styles.rowImage} resizeMode="cover" />
+            ) : (
+              <View style={[styles.rowImage, styles.rowImagePlaceholder]} />
+            )}
             <View style={{ flex: 1 }}>
               <Text style={styles.itemName}>{item.quantity}x {item.name}</Text>
               {item.modifierLabels && item.modifierLabels.length > 0 && (
@@ -170,24 +182,51 @@ export function CartScreen({ navigation }: Props) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#FAFAF8' },
+  container: { flex: 1, backgroundColor: theme.colors.bg },
   optimisticBar: { padding: 12, alignItems: 'center' },
-  optimisticText: { color: '#FFF', fontWeight: '600', fontSize: 14 },
-  empty: { textAlign: 'center', color: '#6B7280', marginTop: 40 },
-  suggestionsBox: { backgroundColor: '#FFF7ED', borderRadius: 12, padding: 16, marginBottom: 16, borderWidth: 1, borderColor: '#FED7AA' },
-  suggestionsTitle: { fontWeight: '600', fontSize: 15, marginBottom: 12, color: '#9A3412' },
-  suggestionRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 8, borderTopWidth: 1, borderTopColor: '#FED7AA' },
-  suggestionName: { fontWeight: '600', fontSize: 14 },
-  suggestionReason: { color: '#6B7280', fontSize: 13, marginTop: 2 },
-  suggestionPrice: { fontWeight: '600', marginLeft: 8 },
-  row: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#FFF', padding: 16, borderRadius: 12, marginBottom: 8 },
-  itemName: { fontWeight: '600', fontSize: 15, fontFamily: 'Inter_600SemiBold' },
-  modifiers: { color: '#6B7280', fontSize: 12, marginTop: 2, fontFamily: 'Inter_400Regular' },
-  instructions: { color: '#6B7280', fontSize: 13, marginTop: 4, fontFamily: 'Inter_400Regular' },
-  price: { fontWeight: '600', marginRight: 12 },
-  remove: { color: '#DC2626', fontSize: 18 },
-  footer: { padding: 16, backgroundColor: '#FFF', borderTopWidth: 1, borderTopColor: '#E8E6E1' },
-  total: { fontSize: 18, fontWeight: '600', marginBottom: 12 },
-  submitButton: { padding: 16, borderRadius: 10, alignItems: 'center' },
-  submitText: { color: '#FFF', fontWeight: '600' },
+  optimisticText: { color: theme.colors.goldOn, fontFamily: theme.fonts.sansBold, fontSize: 14 },
+  empty: { textAlign: 'center', color: theme.colors.onSurfaceVariant, marginTop: 40, fontFamily: theme.fonts.sans },
+  cartCount: {
+    fontFamily: theme.fonts.sansBold,
+    fontSize: 12,
+    letterSpacing: 1.2,
+    textTransform: 'uppercase',
+    color: theme.colors.onSurfaceVariant,
+    marginBottom: 12,
+  },
+  suggestionsBox: {
+    backgroundColor: theme.colors.surfaceLow,
+    borderRadius: theme.radii.lg,
+    padding: 16,
+    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: theme.colors.outlineVariant,
+  },
+  suggestionsTitle: { fontFamily: theme.fonts.sansBold, fontSize: 15, marginBottom: 12, color: theme.colors.gold },
+  suggestionRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 8, borderTopWidth: 1, borderTopColor: theme.colors.outlineVariant },
+  suggestionName: { fontFamily: theme.fonts.sansBold, fontSize: 14, color: theme.colors.onSurface },
+  suggestionReason: { color: theme.colors.onSurfaceVariant, fontSize: 13, marginTop: 2, fontFamily: theme.fonts.sans },
+  suggestionPrice: { fontFamily: theme.fonts.sansBold, marginLeft: 8 },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: theme.colors.surfaceLow,
+    borderWidth: 1,
+    borderColor: theme.colors.outlineVariant,
+    padding: 12,
+    borderRadius: theme.radii.lg,
+    marginBottom: 8,
+    gap: 12,
+  },
+  rowImage: { width: 56, height: 56, borderRadius: theme.radii.md },
+  rowImagePlaceholder: { backgroundColor: theme.colors.surfaceHigh },
+  itemName: { fontFamily: theme.fonts.sansBold, fontSize: 15, color: theme.colors.onSurface },
+  modifiers: { color: theme.colors.onSurfaceVariant, fontSize: 12, marginTop: 2, fontFamily: theme.fonts.sans },
+  instructions: { color: theme.colors.onSurfaceVariant, fontSize: 13, marginTop: 4, fontFamily: theme.fonts.sans },
+  price: { fontFamily: theme.fonts.sansBold, marginRight: 12, color: theme.colors.onSurface },
+  remove: { color: theme.colors.error, fontSize: 18 },
+  footer: { padding: 16, backgroundColor: theme.colors.bg, borderTopWidth: 1, borderTopColor: theme.colors.outlineVariant },
+  total: { fontSize: 18, fontFamily: theme.fonts.sansBold, marginBottom: 12, color: theme.colors.onSurface },
+  submitButton: { padding: 16, borderRadius: theme.radii.full, alignItems: 'center' },
+  submitText: { color: theme.colors.goldOn, fontFamily: theme.fonts.sansBold, letterSpacing: 0.5 },
 });
